@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/order_model.dart';
@@ -223,7 +223,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             child: Text(
               label,
               style: TextStyle(
-                fontSize: bold ? 20 : 17,
+                fontSize: bold ? 16 : 14,
                 fontWeight: bold ? FontWeight.w900 : FontWeight.w500,
               ),
             ),
@@ -231,7 +231,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           Text(
             value,
             style: TextStyle(
-              fontSize: bold ? 22 : 17,
+              fontSize: bold ? 17 : 14,
               fontWeight: bold ? FontWeight.w900 : FontWeight.w500,
               color: bold ? Theme.of(context).colorScheme.secondary : null,
             ),
@@ -325,7 +325,7 @@ class _SectionCard extends StatelessWidget {
                 const SizedBox(width: 10),
                 Text(
                   title,
-                  style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
                 ),
               ],
             ),
@@ -379,7 +379,7 @@ class _PaymentOptionTile extends StatelessWidget {
                 child: Text(
                   label,
                   style: TextStyle(
-                    fontSize: 17,
+                    fontSize: 14,
                     fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                   ),
                 ),

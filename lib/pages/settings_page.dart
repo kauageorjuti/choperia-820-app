@@ -26,7 +26,7 @@ class SettingsPage extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     context.t('appearance'),
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
                   ),
                   const SizedBox(height: 14),
                   Text(
@@ -95,7 +95,7 @@ class SettingsPage extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     context.t('account'),
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
                   ),
                   const SizedBox(height: 10),
                   OutlinedButton.icon(

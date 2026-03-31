@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w800,
-                                    fontSize: 30,
+                                    fontSize: 24,
                                   ),
                             ),
                             const SizedBox(height: 6),
@@ -103,18 +103,19 @@ class _LoginPageState extends State<LoginPage> {
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: const Color(0xFFB6C2DA),
+                                    fontSize: 13,
                                   ),
                             ),
-                            const SizedBox(height: 22),
+                            const SizedBox(height: 18),
                             TextFormField(
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
                               textInputAction: TextInputAction.next,
                               validator: Validators.email,
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white, fontSize: 13),
                               decoration: InputDecoration(
                                 labelText: context.t('email'),
-                                labelStyle: const TextStyle(color: Color(0xFFB6C2DA)),
+                                labelStyle: const TextStyle(color: Color(0xFFB6C2DA), fontSize: 13),
                                 prefixIcon: const Icon(
                                   Icons.alternate_email_rounded,
                                   color: Color(0xFFCED8EE),
@@ -140,10 +141,10 @@ class _LoginPageState extends State<LoginPage> {
                               controller: _passwordController,
                               obscureText: _obscurePassword,
                               validator: Validators.password,
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white, fontSize: 13),
                               decoration: InputDecoration(
                                 labelText: context.t('password'),
-                                labelStyle: const TextStyle(color: Color(0xFFB6C2DA)),
+                                labelStyle: const TextStyle(color: Color(0xFFB6C2DA), fontSize: 13),
                                 prefixIcon: const Icon(
                                   Icons.lock_outline_rounded,
                                   color: Color(0xFFCED8EE),

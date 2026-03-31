@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/product.dart';
@@ -49,6 +49,10 @@ class _HomePageState extends State<HomePage> {
     _searchController.dispose();
     _searchFocusNode.dispose();
     super.dispose();
+  }
+
+  void _dismissKeyboard() {
+    _searchFocusNode.unfocus();
   }
 
   void _focusSearchField() {
@@ -126,22 +130,26 @@ class _HomePageState extends State<HomePage> {
                   child: Padding(
                     key: _searchSectionKey,
                     padding: const EdgeInsets.fromLTRB(16, 10, 16, 2),
-                    child: TextField(
-                      focusNode: _searchFocusNode,
-                      controller: _searchController,
-                      onChanged: (String value) => menu.setSearchQuery(value),
-                      decoration: InputDecoration(
-                        hintText: 'Buscar produto pelo nome',
-                        prefixIcon: const Icon(Icons.search_rounded),
-                        suffixIcon: menu.searchQuery.isEmpty
-                            ? null
-                            : IconButton(
-                                onPressed: () {
-                                  _searchController.clear();
-                                  menu.setSearchQuery('');
-                                },
-                                icon: const Icon(Icons.close_rounded),
-                              ),
+                    child: SizedBox(
+                      height: 42,
+                      child: TextField(
+                        focusNode: _searchFocusNode,
+                        controller: _searchController,
+                        style: const TextStyle(fontSize: 13),
+                        onChanged: (String value) => menu.setSearchQuery(value),
+                        decoration: InputDecoration(
+                          hintText: 'Buscar produto pelo nome',
+                          prefixIcon: const Icon(Icons.search_rounded, size: 20),
+                          suffixIcon: menu.searchQuery.isEmpty
+                              ? null
+                              : IconButton(
+                                  onPressed: () {
+                                    _searchController.clear();
+                                    menu.setSearchQuery('');
+                                  },
+                                  icon: const Icon(Icons.close_rounded, size: 18),
+                                ),
+                        ),
                       ),
                     ),
                   ),
@@ -159,7 +167,10 @@ class _HomePageState extends State<HomePage> {
                           return CategoryChip(
                             label: category,
                             selected: menu.selectedCategory == category,
-                            onTap: () => menu.selectCategory(category),
+                            onTap: () {
+                              _dismissKeyboard();
+                              menu.selectCategory(category);
+                            },
                           );
                         },
                       ),
@@ -260,15 +271,16 @@ class _HomePageState extends State<HomePage> {
             selectedItemColor: const Color(0xFFD4AF37),
             unselectedItemColor: const Color(0xFFB3B3B3),
             selectedLabelStyle: const TextStyle(
-              fontSize: 12,
+              fontSize: 10,
               fontWeight: FontWeight.w700,
             ),
             unselectedLabelStyle: const TextStyle(
-              fontSize: 12,
+              fontSize: 10,
               fontWeight: FontWeight.w500,
             ),
             onTap: (int index) {
               if (index == 0) {
+                _dismissKeyboard();
                 setState(() => _bottomIndex = 0);
                 return;
               }
@@ -277,9 +289,11 @@ class _HomePageState extends State<HomePage> {
                 return;
               }
               if (index == 2) {
+                _dismissKeyboard();
                 _openTabRoute(AppRoutes.tracking, 2);
                 return;
               }
+              _dismissKeyboard();
               _openTabRoute(AppRoutes.settingsPage, 3);
             },
             items: const <BottomNavigationBarItem>[
@@ -319,52 +333,57 @@ class _PromoBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 6, 16, 4),
+      padding: const EdgeInsets.fromLTRB(14, 6, 14, 2),
       child: Container(
-        padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
+        padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: const <Color>[
+          gradient: const LinearGradient(
+            colors: <Color>[
               Color(0xFF0D0D0D),
-              Color(0xFF1D1D1D),
-              Color(0xFFD4AF37),
+              Color(0xFF1A1A1A),
+              Color(0xFF2A2109),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
-          borderRadius: BorderRadius.circular(22),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: const Color(0x33D4AF37)),
         ),
         child: Row(
           children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: const AppProductImage(
+                source: 'assets/images/logo.jpg',
+                width: 56,
+                height: 56,
+                fit: BoxFit.cover,
+                cacheWidth: 120,
+              ),
+            ),
+            const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'Ola, $userName!',
+                    'Ola, $userName! \u{1F37A}',
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w800,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 2),
                   Text(
                     context.t('digitalMenu'),
-                    style: const TextStyle(color: Colors.white, fontSize: 13),
+                    style: const TextStyle(
+                      color: Color(0xFFD4AF37),
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ],
-              ),
-            ),
-            const SizedBox(width: 14),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(14),
-              child: const AppProductImage(
-                source: 'assets/images/logo.jpg',
-                width: 84,
-                height: 84,
-                fit: BoxFit.cover,
-                cacheWidth: 180,
               ),
             ),
           ],

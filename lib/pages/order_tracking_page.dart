@@ -62,7 +62,7 @@ class OrderTrackingPage extends StatelessWidget {
                             'Pedido #${order.id.substring(order.id.length - 6)}',
                             style: const TextStyle(
                               fontWeight: FontWeight.w800,
-                              fontSize: 22,
+                              fontSize: 17,
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -86,7 +86,7 @@ class OrderTrackingPage extends StatelessWidget {
                             'Itens do pedido',
                             style: TextStyle(
                               fontWeight: FontWeight.w800,
-                              fontSize: 18,
+                              fontSize: 15,
                             ),
                           ),
                           const SizedBox(height: 10),
@@ -103,7 +103,7 @@ class OrderTrackingPage extends StatelessWidget {
                     const Text(
                       'Status do pedido',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w900),
                     ),
                     const SizedBox(height: 12),
                     ...statusFlow.asMap().entries.map((entry) {
@@ -214,7 +214,7 @@ class _StatusTile extends StatelessWidget {
               child: Text(
                 label,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 14,
                   fontWeight: isCurrent ? FontWeight.w800 : FontWeight.w500,
                   color: done ? null : Theme.of(context).colorScheme.onSurfaceVariant,
                 ),

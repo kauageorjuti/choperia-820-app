@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/product.dart';
@@ -67,14 +67,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 children: <Widget>[
                   Text(
                     product.name,
-                    style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     product.description,
                     style: TextStyle(
                       color: colorScheme.onSurfaceVariant,
-                      fontSize: 15,
+                      fontSize: 13,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -82,14 +82,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     Formatters.currency(product.price),
                     style: TextStyle(
                       color: colorScheme.secondary,
-                      fontSize: 28,
+                      fontSize: 22,
                       fontWeight: FontWeight.w900,
                     ),
                   ),
                   const SizedBox(height: 20),
                   const Text(
                     'Ingredientes',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
                   ),
                   const SizedBox(height: 10),
                   Wrap(

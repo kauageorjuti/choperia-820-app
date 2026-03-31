@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -55,13 +55,13 @@ class _SplashPageState extends State<SplashPage>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                const AppLogo(size: 132),
+                const AppLogo(size: 100),
                 const SizedBox(height: 18),
                 const Text(
                   'CHOPERIA 820',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 28,
+                    fontSize: 22,
                     letterSpacing: 1.8,
                     fontWeight: FontWeight.w900,
                   ),
@@ -71,7 +71,7 @@ class _SplashPageState extends State<SplashPage>
                   context.t('digitalMenu'),
                   style: TextStyle(
                     color: Colors.white.withValues(alpha: 0.9),
-                    fontSize: 15,
+                    fontSize: 12,
                   ),
                 ),
               ],

@@ -111,7 +111,7 @@ class CartPage extends StatelessWidget {
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 17,
+                                      fontSize: 14,
                                     ),
                                   ),
                                   const SizedBox(height: 6),
@@ -119,7 +119,7 @@ class CartPage extends StatelessWidget {
                                     'Unitario: ${Formatters.currency(item.product.price)}',
                                     style: TextStyle(
                                       color: Theme.of(context).colorScheme.onSurfaceVariant,
-                                      fontSize: 12.5,
+                                      fontSize: 11,
                                     ),
                                   ),
                                   const SizedBox(height: 10),
@@ -127,7 +127,7 @@ class CartPage extends StatelessWidget {
                                     Formatters.currency(item.subtotal),
                                     style: const TextStyle(
                                       fontWeight: FontWeight.w900,
-                                      fontSize: 22,
+                                      fontSize: 17,
                                     ),
                                   ),
                                 ],
@@ -220,14 +220,14 @@ class CartPage extends StatelessWidget {
                         Expanded(
                           child: Text(
                             context.t('orderTotal'),
-                            style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 17),
+                            style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
                           ),
                         ),
                         Text(
                           Formatters.currency(cart.totalPrice),
                           style: const TextStyle(
                             fontWeight: FontWeight.w900,
-                            fontSize: 22,
+                            fontSize: 18,
                           ),
                         ),
                       ],

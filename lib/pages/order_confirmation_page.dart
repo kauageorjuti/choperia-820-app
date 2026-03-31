@@ -59,7 +59,7 @@ class OrderConfirmationPage extends StatelessWidget {
                     'Pedido Confirmado!',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 34,
+                      fontSize: 26,
                       fontWeight: FontWeight.w900,
                       color: Colors.white,
                     ),
@@ -69,7 +69,7 @@ class OrderConfirmationPage extends StatelessWidget {
                     'Seu pedido foi recebido com sucesso\nEm breve ele estara pronto!',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 13,
                       height: 1.4,
                       color: Color(0xFFD9D9E3),
                     ),
@@ -79,7 +79,7 @@ class OrderConfirmationPage extends StatelessWidget {
                     code,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                      fontSize: 52,
+                      fontSize: 38,
                       letterSpacing: 1.2,
                       fontWeight: FontWeight.w900,
                       color: Color(0xFFD4AF37),

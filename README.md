@@ -37,4 +37,4 @@ Se você deseja clonar e rodar este projeto na sua máquina local, siga os passo
 
 1. Clone o repositório:
    ```bash
-   git clone [https://github.com/SEU_USUARIO/choperia_820_app.git](https://github.com/SEU_USUARIO/choperia_820_app.git)
+   git clone [(https://github.com/kauageorjuti/choperia-820-app)]

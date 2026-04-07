@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 class AppLogo extends StatelessWidget {
   const AppLogo({
@@ -16,7 +16,7 @@ class AppLogo extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: const LinearGradient(
-          colors: <Color>[Color(0xFF0D0D0D), Color(0xFFD4AF37)],
+          colors: <Color>[Color(0xFF0D0D0D), Color.fromARGB(115, 8, 136, 21)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -31,13 +31,14 @@ class AppLogo extends StatelessWidget {
       padding: const EdgeInsets.all(6),
       child: ClipOval(
         child: Image.asset(
-          'assets/images/logo.jpg',
-          fit: BoxFit.cover,
+          'assets/images/logoo.png',
+          fit: BoxFit.contain,
+          alignment: Alignment.center,
           cacheWidth: (size * 2).toInt(),
-          filterQuality: FilterQuality.low,
+          filterQuality: FilterQuality.high,
           errorBuilder: (_, _, _) => const Icon(
             Icons.sports_bar,
-            size: 56,
+            size: 60,
             color: Colors.white,
           ),
         ),

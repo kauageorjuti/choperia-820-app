@@ -31,8 +31,9 @@ class OrderConfirmationPage extends StatelessWidget {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: <Color>[
-              Color(0xFF0B0B12),
-              Color(0xFF15172B),
+              Color(0xFF0A1F0E),
+              Color(0xFF0D1A10),
+              Color(0xFF0A120E),
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,

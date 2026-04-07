@@ -91,13 +91,13 @@ class CartPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             ClipRRect(
-                              borderRadius: BorderRadius.circular(14),
+                              borderRadius: BorderRadius.circular(10),
                               child: AppProductImage(
                                 source: item.product.image,
-                                width: 98,
-                                height: 98,
+                                width: 80,
+                                height: 80,
                                 fit: BoxFit.cover,
-                                cacheWidth: 360,
+                                cacheWidth: 300,
                               ),
                             ),
                             const SizedBox(width: 12),
@@ -125,9 +125,10 @@ class CartPage extends StatelessWidget {
                                   const SizedBox(height: 10),
                                   Text(
                                     Formatters.currency(item.subtotal),
+                                    maxLines: 1,
                                     style: const TextStyle(
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 17,
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 14,
                                     ),
                                   ),
                                 ],

@@ -16,6 +16,7 @@ class OrderProvider extends ChangeNotifier {
     required double total,
     required OrderType type,
     String? address,
+    String? observation,
   }) async {
     await Future<void>.delayed(const Duration(milliseconds: 800));
     final List<CartItem> snapshotItems = items
@@ -30,6 +31,7 @@ class OrderProvider extends ChangeNotifier {
       total: total,
       type: type,
       address: address,
+      observation: observation,
       createdAt: DateTime.now(),
       statusHistory: <OrderStatus>[OrderStatus.created],
     );

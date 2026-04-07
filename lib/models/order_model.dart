@@ -39,6 +39,7 @@ class OrderModel {
     required this.createdAt,
     required this.statusHistory,
     this.address,
+    this.observation,
   });
 
   final String id;
@@ -46,8 +47,18 @@ class OrderModel {
   final double total;
   final OrderType type;
   final String? address;
+  final String? observation;
   final DateTime createdAt;
   final List<OrderStatus> statusHistory;
 
   OrderStatus get currentStatus => statusHistory.last;
+
+  /// Returns a short pretty ID like "#2591"
+  String get shortCode {
+    final String numbersOnly = id.replaceAll(RegExp(r'[^0-9]'), '');
+    if (numbersOnly.isEmpty) return '#0000';
+    final String shortId =
+        numbersOnly.length > 4 ? numbersOnly.substring(numbersOnly.length - 4) : numbersOnly;
+    return '#$shortId';
+  }
 }

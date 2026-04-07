@@ -16,15 +16,17 @@ class CategoryChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return Padding(
-      padding: const EdgeInsets.only(right: 10),
+      padding: const EdgeInsets.only(right: 8),
       child: ChoiceChip(
         label: Text(label),
         selected: selected,
+        showCheckmark: false,
         onSelected: (_) => onTap(),
         selectedColor: colorScheme.primary,
         labelStyle: TextStyle(
           color: selected ? Colors.white : colorScheme.onSurface,
           fontWeight: FontWeight.w600,
+          fontSize: 12,
         ),
         side: BorderSide(
           color: selected ? colorScheme.primary : colorScheme.outlineVariant,

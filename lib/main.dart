@@ -9,11 +9,16 @@ import 'providers/menu_provider.dart';
 import 'providers/order_provider.dart';
 import 'utils/app_routes.dart';
 import 'utils/app_theme.dart';
+import 'package:device_preview/device_preview.dart';
 
 void main() {
-  runApp(const ChoperiaApp());
+  runApp(
+    DevicePreview(
+      enabled: true, 
+      builder: (context) => const ChoperiaApp(), 
+    ),
+  );
 }
-
 class ChoperiaApp extends StatelessWidget {
   const ChoperiaApp({super.key});
 
@@ -32,9 +37,10 @@ class ChoperiaApp extends StatelessWidget {
       child: Consumer<AppSettingsProvider>(
         builder: (_, AppSettingsProvider settings, _) {
           return MaterialApp(
+            builder: DevicePreview.appBuilder,
+            locale: DevicePreview.locale(context), 
             title: 'Choperia 820',
             debugShowCheckedModeBanner: false,
-            locale: settings.locale,
             supportedLocales: const <Locale>[
               Locale('pt'),
               Locale('en'),

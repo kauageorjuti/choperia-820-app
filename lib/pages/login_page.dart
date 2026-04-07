@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
 import '../utils/app_routes.dart';
-import '../utils/app_texts.dart';
 import '../utils/validators.dart';
 import '../widgets/app_logo.dart';
 
@@ -50,9 +49,9 @@ class _LoginPageState extends State<LoginPage> {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: <Color>[
-              Color(0xFF050507),
-              Color(0xFF0D0D13),
-              Color(0xFF121826),
+              Color(0xFF0A1F0E),
+              Color(0xFF0D1A10),
+              Color(0xFF0A120E),
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -71,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Container(
                       padding: const EdgeInsets.fromLTRB(20, 24, 20, 18),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF141824).withValues(alpha: 0.82),
+                        color: const Color(0xFF0E1E12).withValues(alpha: 0.85),
                         borderRadius: BorderRadius.circular(30),
                         boxShadow: const <BoxShadow>[
                           BoxShadow(
@@ -86,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
-                            const Center(child: AppLogo(size: 82)),
+                            const Center(child: AppLogo(size: 100)),
                             const SizedBox(height: 18),
                             Text(
                               'Bem-vindo de volta',
@@ -102,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                               'Entre para continuar',
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: const Color(0xFFB6C2DA),
+                                    color: const Color(0xFFAAC4B0),
                                     fontSize: 13,
                                   ),
                             ),
@@ -114,14 +113,14 @@ class _LoginPageState extends State<LoginPage> {
                               validator: Validators.email,
                               style: const TextStyle(color: Colors.white, fontSize: 13),
                               decoration: InputDecoration(
-                                labelText: context.t('email'),
-                                labelStyle: const TextStyle(color: Color(0xFFB6C2DA), fontSize: 13),
+                                labelText: 'E-mail',
+                                labelStyle: const TextStyle(color: Color(0xFFAAC4B0), fontSize: 13),
                                 prefixIcon: const Icon(
                                   Icons.alternate_email_rounded,
                                   color: Color(0xFFCED8EE),
                                 ),
                                 filled: true,
-                                fillColor: const Color(0xFF1B2233),
+                                fillColor: const Color(0xFF152019),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16),
                                   borderSide: BorderSide.none,
@@ -143,8 +142,8 @@ class _LoginPageState extends State<LoginPage> {
                               validator: Validators.password,
                               style: const TextStyle(color: Colors.white, fontSize: 13),
                               decoration: InputDecoration(
-                                labelText: context.t('password'),
-                                labelStyle: const TextStyle(color: Color(0xFFB6C2DA), fontSize: 13),
+                                labelText: 'Senha',
+                                labelStyle: const TextStyle(color: Color(0xFFAAC4B0), fontSize: 13),
                                 prefixIcon: const Icon(
                                   Icons.lock_outline_rounded,
                                   color: Color(0xFFCED8EE),
@@ -161,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                                 filled: true,
-                                fillColor: const Color(0xFF1B2233),
+                                fillColor: const Color(0xFF152019),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16),
                                   borderSide: BorderSide.none,
@@ -246,8 +245,8 @@ class _LoginPageState extends State<LoginPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 const Text(
-                                  'Nao tem uma conta?',
-                                  style: TextStyle(color: Color(0xFFB6C2DA)),
+                                  'Não tem uma conta?',
+                                  style: TextStyle(color: Color(0xFFAAC4B0)),
                                 ),
                                 TextButton(
                                   onPressed: () {

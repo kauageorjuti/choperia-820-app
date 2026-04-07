@@ -32,7 +32,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     messenger.showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 2),
+        duration: const Duration(milliseconds: 800),
         content: Text('${widget.product.name} adicionado ao carrinho!'),
       ),
     );
@@ -46,7 +46,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
-            expandedHeight: 290,
+            expandedHeight: 220,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               background: Hero(
@@ -61,20 +61,21 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
+              padding: const EdgeInsets.fromLTRB(18, 18, 18, 40),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     product.name,
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     product.description,
                     style: TextStyle(
                       color: colorScheme.onSurfaceVariant,
-                      fontSize: 13,
+                      fontSize: 14,
+                      height: 1.4,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -82,27 +83,59 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     Formatters.currency(product.price),
                     style: TextStyle(
                       color: colorScheme.secondary,
-                      fontSize: 22,
+                      fontSize: 24,
                       fontWeight: FontWeight.w900,
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Ingredientes',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
+                  const SizedBox(height: 24),
+                  Row(
+                    children: <Widget>[
+                      Icon(Icons.restaurant_menu_rounded,
+                          size: 18, color: colorScheme.primary),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Ingredientes',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                          color: colorScheme.primary,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 10),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: product.ingredients
-                        .map(
-                          (String ingredient) => Chip(
-                            label: Text(ingredient),
-                            avatar: const Icon(Icons.check_rounded, size: 16),
-                          ),
-                        )
-                        .toList(),
+                  const SizedBox(height: 12),
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(14),
+                      child: Column(
+                        children: product.ingredients
+                            .map(
+                              (String ingredient) => Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 5),
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.check_circle_rounded,
+                                      size: 18,
+                                      color: colorScheme.primary,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: Text(
+                                        ingredient,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 28),
                   AnimatedScale(
@@ -126,3 +159,4 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     );
   }
 }
+

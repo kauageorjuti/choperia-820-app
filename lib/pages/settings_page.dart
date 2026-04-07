@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../providers/app_settings_provider.dart';
 import '../providers/auth_provider.dart';
 import '../utils/app_routes.dart';
-import '../utils/app_texts.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -14,7 +13,7 @@ class SettingsPage extends StatelessWidget {
     final AppSettingsProvider settings = context.watch<AppSettingsProvider>();
 
     return Scaffold(
-      appBar: AppBar(title: Text(context.t('settings'))),
+      appBar: AppBar(title: const Text('Configurações')),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: <Widget>[
@@ -24,62 +23,32 @@ class SettingsPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    context.t('appearance'),
-                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
+                  const Text(
+                    'Aparência',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
                   ),
                   const SizedBox(height: 14),
-                  Text(
-                    context.t('theme'),
-                    style: const TextStyle(fontWeight: FontWeight.w700),
+                  const Text(
+                    'Tema',
+                    style: TextStyle(fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 10),
                   SegmentedButton<ThemeMode>(
-                    segments: <ButtonSegment<ThemeMode>>[
+                    segments: const <ButtonSegment<ThemeMode>>[
                       ButtonSegment<ThemeMode>(
                         value: ThemeMode.light,
-                        icon: const Icon(Icons.light_mode_outlined),
-                        label: Text(context.t('lightTheme')),
+                        icon: Icon(Icons.light_mode_outlined),
+                        label: Text('Claro'),
                       ),
                       ButtonSegment<ThemeMode>(
                         value: ThemeMode.dark,
-                        icon: const Icon(Icons.dark_mode_outlined),
-                        label: Text(context.t('darkTheme')),
+                        icon: Icon(Icons.dark_mode_outlined),
+                        label: Text('Escuro'),
                       ),
                     ],
                     selected: <ThemeMode>{settings.themeMode},
                     onSelectionChanged: (Set<ThemeMode> selected) {
                       settings.setThemeMode(selected.first);
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    context.t('language'),
-                    style: const TextStyle(fontWeight: FontWeight.w700),
-                  ),
-                  const SizedBox(height: 10),
-                  DropdownButtonFormField<String>(
-                    initialValue: settings.locale.languageCode,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.language_outlined),
-                    ),
-                    items: const <DropdownMenuItem<String>>[
-                      DropdownMenuItem<String>(
-                        value: 'pt',
-                        child: Text('Portugues (BR)'),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: 'en',
-                        child: Text('English'),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: 'es',
-                        child: Text('Espanol'),
-                      ),
-                    ],
-                    onChanged: (String? value) {
-                      if (value == null) return;
-                      settings.setLocale(Locale(value));
                     },
                   ),
                 ],
@@ -93,16 +62,16 @@ class SettingsPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    context.t('account'),
-                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
+                  const Text(
+                    'Conta',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
                   ),
                   const SizedBox(height: 10),
                   OutlinedButton.icon(
                     onPressed: () {
                       context.read<AuthProvider>().logout();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(context.t('logoutSuccess'))),
+                        const SnackBar(content: Text('Você saiu da sua conta com sucesso.')),
                       );
                       Navigator.pushNamedAndRemoveUntil(
                         context,
@@ -111,7 +80,7 @@ class SettingsPage extends StatelessWidget {
                       );
                     },
                     icon: const Icon(Icons.logout_rounded),
-                    label: Text(context.t('logout')),
+                    label: const Text('Sair da Conta'),
                     style: OutlinedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 48),
                     ),

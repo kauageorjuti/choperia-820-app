@@ -53,9 +53,9 @@ class AboutPage extends StatelessWidget {
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                _MemberTile(name: 'Nome 1'),
-                _MemberTile(name: 'Nome 2'),
-                _MemberTile(name: 'Nome 3'),
+                _MemberTile(name: 'Kauã da Silva Georjuti'),
+                _MemberTile(name: 'Pedro Paulo Valdevite de Carvalho'),
+               
               ],
             ),
           ),
@@ -68,8 +68,8 @@ class AboutPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 _DetailRow(label: 'Disciplina', value: 'Projeto de Desenvolvimento Mobile'),
-                _DetailRow(label: 'Professor(a)', value: '____________________'),
-                _DetailRow(label: 'Semestre', value: '________________________'),
+                _DetailRow(label: 'Professor(a)', value: 'Plotz'),
+                _DetailRow(label: 'Etapa', value: 'Setima etapa'),
               ],
             ),
           ),
@@ -86,7 +86,7 @@ class AboutPage extends StatelessWidget {
                 _TechChip(label: 'Dart'),
                 _TechChip(label: 'Provider'),
                 _TechChip(label: 'Material 3'),
-                _TechChip(label: 'Google Fonts'),
+                
               ],
             ),
           ),

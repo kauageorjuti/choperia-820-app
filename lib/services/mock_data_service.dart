@@ -18,7 +18,7 @@ class MockDataService {
     'Pratos',
   ];
 
-  static const String _logo = 'assets/images/logo.jpg';
+  static const String logo = 'assets/images/logo.jpg';
   static const String _menu = 'assets/images/cardapio.jpg';
   static const String _adicionais = 'assets/images/produtos/adicionais.jpg';
 
@@ -28,7 +28,7 @@ class MockDataService {
       name: 'Amendoim Tradicional',
       description: 'Couvert simples de amendoim com pele.',
       price: 17.40,
-      image: _menu,
+      image: 'assets/images/produtos/amendoimtradicional.jpg',
       category: 'Couvert Simples',
       ingredients: <String>['Amendoim torrado', 'Sal'],
     ),
@@ -37,7 +37,7 @@ class MockDataService {
       name: 'Azeitonas Verdes',
       description: 'Porcao fria para acompanhar o chope.',
       price: 17.40,
-      image: _menu,
+      image: 'assets/images/produtos/azeitonaverde.jpg',
       category: 'Couvert Simples',
       ingredients: <String>['Azeitonas verdes', 'Temperos da casa'],
     ),
@@ -46,7 +46,7 @@ class MockDataService {
       name: 'Cenoura Palito',
       description: 'Legumes em tiras, ideal para petiscar.',
       price: 17.40,
-      image: _menu,
+      image: 'assets/images/produtos/cenouranopalito.jpg',
       category: 'Couvert Simples',
       ingredients: <String>['Cenoura fresca', 'Tempero leve'],
     ),
@@ -55,7 +55,7 @@ class MockDataService {
       name: 'Mussarela',
       description: 'Mussarela em porcao fria.',
       price: 17.40,
-      image: _logo,
+      image: 'assets/images/produtos/mussarela.jpg',
       category: 'Couvert Simples',
       ingredients: <String>['Mussarela fatiada'],
     ),
@@ -64,7 +64,7 @@ class MockDataService {
       name: 'Fritas com Queijo',
       description: 'Petisco classico para dividir.',
       price: 39.90,
-      image: _logo,
+      image: 'assets/images/produtos/fritascomqueijo.jpg',
       category: 'Petiscos',
       ingredients: <String>['Batata frita', 'Queijo derretido', 'Sal'],
     ),
@@ -73,7 +73,7 @@ class MockDataService {
       name: 'Fritas com Bacon',
       description: 'Batata crocante coberta com bacon.',
       price: 39.90,
-      image: _logo,
+      image: 'assets/images/produtos/fritascombacon.jpg',
       category: 'Petiscos',
       ingredients: <String>['Batata frita', 'Bacon crocante', 'Sal'],
     ),
@@ -100,7 +100,7 @@ class MockDataService {
       name: 'Mandioca Frita',
       description: 'Mandioca dourada e sequinha.',
       price: 29.90,
-      image: _menu,
+      image: 'assets/images/produtos/mandiocafrita.jpg',
       category: 'Petiscos',
       ingredients: <String>['Mandioca', 'Sal', 'Tempero da casa'],
     ),
@@ -218,7 +218,7 @@ class MockDataService {
       name: 'Tomate e Cebola 280g',
       description: 'Salada classica de acompanhamento.',
       price: 19.40,
-      image: _menu,
+      image: 'assets/images/produtos/tomatecomcebola.jpg',
       category: 'Saladas',
       ingredients: <String>['Tomate', 'Cebola', 'Azeite', 'Sal'],
     ),
@@ -227,7 +227,7 @@ class MockDataService {
       name: 'Lanche 820',
       description: 'Sanduiche artesanal completo da casa.',
       price: 31.40,
-      image: _logo,
+      image: 'assets/images/produtos/lanche820.jpg',
       category: 'Lanche 820',
       ingredients: <String>[
         'Pao de hamburguer',
@@ -243,7 +243,7 @@ class MockDataService {
       name: 'Hamburguer 820 no prato',
       description: 'Hamburguer no prato da casa.',
       price: 31.40,
-      image: 'assets/images/produtos/fritas.jpg',
+      image: 'assets/images/produtos/hamburguernoprato.jpg',
       category: 'Lanche 820',
       ingredients: <String>[
         'Hamburguer artesanal',

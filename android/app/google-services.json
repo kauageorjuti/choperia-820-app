@@ -12,7 +12,20 @@
           "package_name": "com.example.choperia_820_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "984856277343-7261kgu8tgdn436nl650sgooblhtu2l1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.choperia_820_app",
+            "certificate_hash": "3397e1b6d3ab14c4da87c136d2851054d2d349b0"
+          }
+        },
+        {
+          "client_id": "984856277343-hq08tums6vdkfprq3gmtksi1opr39n5t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB6ZN_dk8rSj6_ySqJ7alEoEYvx6YXffew"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "984856277343-hq08tums6vdkfprq3gmtksi1opr39n5t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "984856277343-nnbm67plq1ri8c13fqct8o3hfh76jvjm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.choperia820app"
+              }
+            }
+          ]
         }
       }
     }

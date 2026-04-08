@@ -8,8 +8,14 @@ class AuthProvider extends ChangeNotifier {
   bool _isLoading = false;
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  // API v6: instância simples, sem singleton, sem initialize()
-  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+  // clientId      → usado pela Web (google_sign_in_web)
+  // serverClientId → usado pelo Android para gerar o idToken
+  // Ambos usam o Web Client ID (client_type: 3) do google-services.json
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: ['email'],
+    clientId: '984856277343-hq08tums6vdkfprq3gmtksi1opr39n5t.apps.googleusercontent.com',
+    serverClientId: '984856277343-hq08tums6vdkfprq3gmtksi1opr39n5t.apps.googleusercontent.com',
+  );
 
   AppUser? get currentUser => _currentUser;
   bool get isAuthenticated => _currentUser != null;
@@ -49,27 +55,32 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // Abre a tela de seleção de conta do Google
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      UserCredential userCred;
 
-      if (googleUser == null) {
-        // Usuário cancelou o fluxo
-        _isLoading = false;
-        notifyListeners();
-        throw Exception('Login com Google cancelado.');
+      if (kIsWeb) {
+        // NA WEB: Usamos a forma nativa do Firebase para Web (muito mais simples e estável)
+        final GoogleAuthProvider googleProvider = GoogleAuthProvider();
+        userCred = await _firebaseAuth.signInWithPopup(googleProvider);
+      } else {
+        // NO ANDROID/iOS: Usamos o google_sign_in
+        final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+        if (googleUser == null) {
+          _isLoading = false;
+          notifyListeners();
+          throw Exception('Login com Google cancelado.');
+        }
+
+        final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+        final OAuthCredential credential = GoogleAuthProvider.credential(
+          idToken: googleAuth.idToken,
+          accessToken: googleAuth.accessToken,
+        );
+
+        userCred = await _firebaseAuth.signInWithCredential(credential);
       }
 
-      // Pega os tokens de autenticação
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-
-      final OAuthCredential credential = GoogleAuthProvider.credential(
-        idToken: googleAuth.idToken,
-        accessToken: googleAuth.accessToken,
-      );
-
-      // Loga no Firebase com a credencial Google
-      final UserCredential userCred = await _firebaseAuth.signInWithCredential(credential);
-
+      // Salva o usuário logado
       _currentUser = AppUser(
         name: userCred.user?.displayName ?? 'Cliente Google',
         email: userCred.user?.email ?? '',

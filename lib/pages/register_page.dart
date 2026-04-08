@@ -20,6 +20,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmController = TextEditingController();
+  bool _obscurePassword = true;
+  bool _obscureConfirm = true;
 
   @override
   void dispose() {
@@ -31,23 +33,44 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
-  Future<void> _submit() async {
+    Future<void> _submit() async {
+    // 1. Verifica se todos os campos estão preenchidos corretamente
     if (!_formKey.currentState!.validate()) return;
 
     final AuthProvider auth = context.read<AuthProvider>();
-    await auth.register(
-      name: _nameController.text.trim(),
-      email: _emailController.text.trim(),
-      phone: _phoneController.text.trim(),
-      password: _passwordController.text,
-    );
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Conta criada com sucesso!')),
-    );
-    Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (Route<dynamic> _) => false);
-  }
 
+    try {
+      // 2. TENTA criar a conta de verdade lá no servidor do Google
+      await auth.register(
+        name: _nameController.text.trim(),
+        email: _emailController.text.trim(),
+        phone: _phoneController.text.trim(),
+        password: _passwordController.text,
+      );
+
+      if (!mounted) return;
+      
+      // 3. Se deu certo, comemora e manda direto para a tela inicial (Home)
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Conta criada com sucesso! Bem-vindo à Choperia 820 🍻'),
+          backgroundColor: Colors.green,
+        ),
+      );
+      Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (Route<dynamic> _) => false);
+
+    } catch (e) {
+      if (!mounted) return;
+      
+      // 4. Se o Firebase recusar (ex: e-mail já existe), mostra o erro!
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Erro ao criar conta. O e-mail já pode estar em uso ou a senha é muito fraca.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,15 +112,25 @@ class _RegisterPageState extends State<RegisterPage> {
                     CustomTextField(
                       label: 'Senha',
                       controller: _passwordController,
-                      obscureText: true,
+                      obscureText: _obscurePassword,
                       prefixIcon: Icons.lock_outline_rounded,
                       validator: Validators.password,
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() => _obscurePassword = !_obscurePassword);
+                        },
+                        icon: Icon(
+                          _obscurePassword
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 14),
                     CustomTextField(
                       label: 'Confirmar senha',
                       controller: _confirmController,
-                      obscureText: true,
+                      obscureText: _obscureConfirm,
                       prefixIcon: Icons.lock_person_outlined,
                       validator: (String? value) {
                         final String? passError = Validators.password(value);
@@ -107,6 +140,16 @@ class _RegisterPageState extends State<RegisterPage> {
                         }
                         return null;
                       },
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() => _obscureConfirm = !_obscureConfirm);
+                        },
+                        icon: Icon(
+                          _obscureConfirm
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 26),
                     Consumer<AuthProvider>(

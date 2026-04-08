@@ -10,6 +10,7 @@ class CustomTextField extends StatelessWidget {
     this.validator,
     this.textInputAction,
     this.prefixIcon,
+    this.suffixIcon,
   });
 
   final String label;
@@ -19,6 +20,7 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextInputAction? textInputAction;
   final IconData? prefixIcon;
+  final Widget? suffixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
+        suffixIcon: suffixIcon,
       ),
     );
   }

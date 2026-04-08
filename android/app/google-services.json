@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "984856277343",
+    "project_id": "choperia-820-app-4f675",
+    "storage_bucket": "choperia-820-app-4f675.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:984856277343:android:e6bcf2810acdd6933786ea",
+        "android_client_info": {
+          "package_name": "com.example.choperia_820_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6ZN_dk8rSj6_ySqJ7alEoEYvx6YXffew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

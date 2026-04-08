@@ -1,33 +1,93 @@
-import 'package:flutter/material.dart';
-
+import 'package:flutter/foundation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../models/app_user.dart';
 
 class AuthProvider extends ChangeNotifier {
   AppUser? _currentUser;
   bool _isLoading = false;
 
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  // API v6: instância simples, sem singleton, sem initialize()
+  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+
   AppUser? get currentUser => _currentUser;
   bool get isAuthenticated => _currentUser != null;
   bool get isLoading => _isLoading;
 
-  Future<bool> login({
+  // 1. LOGIN COM E-MAIL E SENHA
+  Future<void> login({
     required String email,
     required String password,
   }) async {
     _isLoading = true;
     notifyListeners();
-    await Future<void>.delayed(const Duration(milliseconds: 900));
-    _currentUser = AppUser(
-      name: 'Cliente Choperia',
-      email: email,
-      phone: '(11) 99999-9999',
-    );
+
+    try {
+      final UserCredential credential = await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      _currentUser = AppUser(
+        name: credential.user?.displayName ?? 'Cliente Choperia',
+        email: credential.user?.email ?? email,
+        phone: '',
+      );
+    } catch (e) {
+      _isLoading = false;
+      notifyListeners();
+      throw Exception('E-mail ou senha incorretos.');
+    }
+
     _isLoading = false;
     notifyListeners();
-    return true;
   }
 
-  Future<bool> register({
+  // 2. LOGIN COM GOOGLE — API v6
+  Future<void> loginWithGoogle() async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      // Abre a tela de seleção de conta do Google
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+      if (googleUser == null) {
+        // Usuário cancelou o fluxo
+        _isLoading = false;
+        notifyListeners();
+        throw Exception('Login com Google cancelado.');
+      }
+
+      // Pega os tokens de autenticação
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        idToken: googleAuth.idToken,
+        accessToken: googleAuth.accessToken,
+      );
+
+      // Loga no Firebase com a credencial Google
+      final UserCredential userCred = await _firebaseAuth.signInWithCredential(credential);
+
+      _currentUser = AppUser(
+        name: userCred.user?.displayName ?? 'Cliente Google',
+        email: userCred.user?.email ?? '',
+        phone: '',
+      );
+    } catch (e) {
+      _isLoading = false;
+      notifyListeners();
+      debugPrint('Erro Google Sign-In: $e');
+      throw Exception('Erro ao entrar com o Google. Verifique sua conexão e tente novamente.');
+    }
+
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  // 3. CRIAR CONTA COM E-MAIL E SENHA
+  Future<void> register({
     required String name,
     required String email,
     required String phone,
@@ -35,26 +95,49 @@ class AuthProvider extends ChangeNotifier {
   }) async {
     _isLoading = true;
     notifyListeners();
-    await Future<void>.delayed(const Duration(milliseconds: 1200));
-    _currentUser = AppUser(
-      name: name,
-      email: email,
-      phone: phone,
-    );
+
+    try {
+      final UserCredential credential = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      await credential.user?.updateDisplayName(name);
+      _currentUser = AppUser(
+        name: name,
+        email: email,
+        phone: phone,
+      );
+    } catch (e) {
+      _isLoading = false;
+      notifyListeners();
+      throw Exception('Erro ao criar conta. Verifique os dados e tente novamente.');
+    }
+
     _isLoading = false;
     notifyListeners();
-    return true;
   }
 
+  // 4. RECUPERAR SENHA
   Future<void> recoverPassword(String email) async {
     _isLoading = true;
     notifyListeners();
-    await Future<void>.delayed(const Duration(milliseconds: 800));
+
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      _isLoading = false;
+      notifyListeners();
+      throw Exception('Erro ao enviar e-mail de recuperação.');
+    }
+
     _isLoading = false;
     notifyListeners();
   }
 
-  void logout() {
+  // 5. LOGOUT
+  Future<void> logout() async {
+    await _firebaseAuth.signOut();
+    await _googleSignIn.signOut();
     _currentUser = null;
     notifyListeners();
   }

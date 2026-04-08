@@ -29,17 +29,43 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _submit() async {
+    // 1. Verifica se os campos não estão vazios
     if (!_formKey.currentState!.validate()) return;
+    
     final AuthProvider auth = context.read<AuthProvider>();
+
+    try {
+      // 2. TENTA fazer o login no Firebase
+      // (Atenção: usei o nome 'fazerLogin' que criamos no passo anterior.
+      // Se no seu AuthProvider estiver escrito 'login', basta trocar aqui!)
     await auth.login(
-      email: _emailController.text.trim(),
-      password: _passwordController.text,
-    );
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Login realizado com sucesso!')),
-    );
-    Navigator.pushReplacementNamed(context, AppRoutes.home);
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
+      
+
+      if (!mounted) return;
+      
+      // 3. Deu certo! Mostra a mensagem e vai para a Home
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Login realizado com sucesso! 🍻'),
+          backgroundColor: Colors.green,
+        ),
+      );
+      Navigator.pushReplacementNamed(context, AppRoutes.home);
+
+    } catch (e) {
+      if (!mounted) return;
+      
+      // 4. CAPTURA o erro (Ex: senha incorreta) e avisa o usuário
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('E-mail ou senha incorretos.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
@@ -88,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                             const Center(child: AppLogo(size: 100)),
                             const SizedBox(height: 18),
                             Text(
-                              'Bem-vindo de volta',
+                              'Bem-vindo',
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                                     color: Colors.white,
@@ -213,13 +239,26 @@ class _LoginPageState extends State<LoginPage> {
                               children: <Widget>[
                                 Expanded(
                                   child: OutlinedButton.icon(
-                                    onPressed: () {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                          content: Text('Login com Google em breve.'),
-                                        ),
-                                      );
-                                    },
+                                   onPressed: () async {
+                                        final AuthProvider auth = context.read<AuthProvider>();
+                                        try {
+                                          await auth.loginWithGoogle();
+                                          
+                                          if (!mounted) return;
+                                          // Se deu tudo certo, vai para a Home!
+                                          Navigator.pushReplacementNamed(context, AppRoutes.home);
+                                          
+                                        } catch (e) {
+                                          if (!mounted) return;
+                                          // Se der erro, mostra a barrinha vermelha
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                              content: Text('Erro ao entrar com o Google.'),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                        }
+                                      },
                                     icon: const Icon(Icons.g_mobiledata_rounded),
                                     label: const Text('Google'),
                                   ),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'providers/app_settings_provider.dart';
 import 'providers/auth_provider.dart';
 import 'providers/cart_provider.dart';
@@ -10,8 +11,15 @@ import 'providers/order_provider.dart';
 import 'utils/app_routes.dart';
 import 'utils/app_theme.dart';
 import 'package:device_preview/device_preview.dart';
+void main() async {
+  // Garante que o Flutter está pronto antes do Firebase
+  WidgetsFlutterBinding.ensureInitialized();
 
-void main() {
+  // Liga o banco de dados
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(
     DevicePreview(
       enabled: true, 
@@ -19,6 +27,7 @@ void main() {
     ),
   );
 }
+
 class ChoperiaApp extends StatelessWidget {
   const ChoperiaApp({super.key});
 
@@ -43,8 +52,7 @@ class ChoperiaApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             supportedLocales: const <Locale>[
               Locale('pt'),
-              Locale('en'),
-              Locale('es'),
+             
             ],
             localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
               GlobalMaterialLocalizations.delegate,

@@ -19,7 +19,7 @@ class MockDataService {
   ];
 
   static const String logo = 'assets/images/logo.jpg';
-  static const String _menu = 'assets/images/cardapio.jpg';
+  static const String menu = 'assets/images/cardapio.jpg';
   static const String _adicionais = 'assets/images/produtos/adicionais.jpg';
 
   static final List<Product> _products = <Product>[
@@ -35,7 +35,7 @@ class MockDataService {
     Product(
       id: 'cv-2',
       name: 'Azeitonas Verdes',
-      description: 'Porcao fria para acompanhar o chope.',
+      description: 'Porcao fria para acompanhar o chopp.',
       price: 17.40,
       image: 'assets/images/produtos/azeitonaverde.jpg',
       category: 'Couvert Simples',
@@ -118,7 +118,7 @@ class MockDataService {
       name: 'Kibe Frito com Molho Tartaro',
       description: 'Unidades de kibe crocante com molho.',
       price: 36.90,
-      image: _menu,
+      image: 'assets/images/produtos/kibefrito.jpg',
       category: 'Petiscos',
       ingredients: <String>[
         'Massa de kibe',
@@ -132,7 +132,7 @@ class MockDataService {
       name: 'Kibe Recheado com Catupiry',
       description: 'Kibe recheado com Catupiry e frito na hora.',
       price: 47.90,
-      image: _menu,
+      image: 'assets/images/produtos/kiberecheado.jpg',
       category: 'Petiscos',
       ingredients: <String>[
         'Massa de kibe',
@@ -146,7 +146,7 @@ class MockDataService {
       name: 'Bolinho de Costela',
       description: 'Porcao de bolinhos artesanais.',
       price: 37.90,
-      image: 'assets/images/produtos/fritas_bacon_queijo.jpg',
+      image: 'assets/images/produtos/bolinhodecostela.jpg',
       category: 'Petiscos',
       ingredients: <String>['Costela', 'Massa temperada', 'Empanado'],
     ),
@@ -155,7 +155,7 @@ class MockDataService {
       name: 'Bolinho de Bacalhau',
       description: 'Tradicional bolinho crocante.',
       price: 37.90,
-      image: 'assets/images/produtos/fritas_bacon_queijo.jpg',
+      image: 'assets/images/produtos/bolinhodebacalhau.jpg',
       category: 'Petiscos',
       ingredients: <String>['Bacalhau', 'Batata', 'Temperos', 'Empanado'],
     ),
@@ -164,25 +164,25 @@ class MockDataService {
       name: 'Bolinho de Tilapia com Queijo',
       description: 'Bolinho de peixe recheado com queijo.',
       price: 37.90,
-      image: 'assets/images/produtos/fritas_bacon_queijo.jpg',
+      image: 'assets/images/produtos/bolinhodetilapia.jpg',
       category: 'Petiscos',
       ingredients: <String>['Tilapia', 'Queijo', 'Massa da casa', 'Empanado'],
     ),
     Product(
       id: 'pt-12',
-      name: 'Moela de Frango',
-      description: 'Porcao temperada e cozida.',
+      name: 'Medalhão de Frango',
+      description: 'Porcao temperada.',
       price: 35.90,
-      image: _menu,
+      image: 'assets/images/produtos/medalhaodefrango.jpg',
       category: 'Petiscos',
-      ingredients: <String>['Moela', 'Tomate', 'Cebola', 'Tempero da casa'],
+      ingredients: <String>['Medalhão', 'Frango', 'Bacon', 'Tempero da casa'],
     ),
     Product(
       id: 'pt-13',
       name: 'Pastelzinho de Carne (25 un.)',
-      description: 'Mini pasteis para compartilhar.',
-      price: 35.00,
-      image: 'assets/images/produtos/fritas_bacon_queijo.jpg',
+      description: 'Mini pasteis recheados com carne.',
+      price: 35.90,
+      image: 'assets/images/produtos/pastelzinhocarne.jpg',
       category: 'Petiscos',
       ingredients: <String>['Massa de pastel', 'Carne moida', 'Temperos'],
     ),
@@ -190,8 +190,8 @@ class MockDataService {
       id: 'pt-14',
       name: 'Pastelzinho de Queijo (25 un.)',
       description: 'Mini pasteis recheados com queijo.',
-      price: 35.00,
-      image: 'assets/images/produtos/fritas_bacon_queijo.jpg',
+      price: 35.90,
+      image: 'assets/images/produtos/pastelzinhoqueijo.jpg',
       category: 'Petiscos',
       ingredients: <String>['Massa de pastel', 'Mussarela'],
     ),
@@ -255,9 +255,9 @@ class MockDataService {
     Product(
       id: 'cf-1',
       name: 'Combinado Frio Misto (500g)',
-      description: 'Tacao frio para petiscar e compartilhar.',
+      description: 'Porção de frios para petiscar e compartilhar.',
       price: 52.90,
-      image: 'assets/images/produtos/fritas.jpg',
+      image: 'assets/images/produtos/combinadodefrios.jpg',
       category: 'Combinados Frios',
       ingredients: <String>[
         'Queijo',
@@ -271,17 +271,36 @@ class MockDataService {
       ],
     ),
     Product(
-      id: 'cf-2',
+      id: 'cf-3',
       name: 'Carpaccio de Carne e Alcaparras',
-      description: 'Laminas finas de carne com toque de alcaparras.',
+      description: 'Laminas finas de carne com toque de alcaparras e mostarda.',
       price: 46.90,
-      image: 'assets/images/produtos/fritas.jpg',
+      image: 'assets/images/produtos/carpaccio.jpg',
       category: 'Combinados Frios',
       ingredients: <String>[
         'Carne bovina fatiada',
         'Alcaparras',
         'Azeite',
         'Tempero da casa',
+        'Mostarda',
+      ],
+    ),
+    Product(
+      id: 'cf-2',
+      name: 'Combinado Frio Misto (1 Kilo)',
+      description: 'Porção de frios para petiscar e compartilhar.',
+      price: 94.90,
+      image: 'assets/images/produtos/combinadodefrios.jpg',
+      category: 'Combinados Frios',
+      ingredients: <String>[
+        'Queijo',
+        'Salame',
+        'Carne',
+        'Cenoura',
+        'Presunto',
+        'Mussarela',
+        'Ovos',
+        'Condimentos',
       ],
     ),
     Product(

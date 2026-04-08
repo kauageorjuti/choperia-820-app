@@ -1,1 +1,16 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"choperia-820-app-4f675","appId":"1:984856277343:android:e6bcf2810acdd6933786ea","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"choperia-820-app-4f675","configurations":{"android":"1:984856277343:android:e6bcf2810acdd6933786ea","ios":"1:984856277343:ios:3ec984337489248c3786ea","macos":"1:984856277343:ios:3ec984337489248c3786ea","web":"1:984856277343:web:92d05df748de71873786ea","windows":"1:984856277343:web:1af7461dfb4395663786ea"}}}}}}
+{
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

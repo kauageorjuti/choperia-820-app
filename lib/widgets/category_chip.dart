@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Tab de categoria com underline indicator — estilo Tako Sushi.
 class CategoryChip extends StatelessWidget {
   const CategoryChip({
     super.key,
@@ -14,22 +15,29 @@ class CategoryChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: ChoiceChip(
-        label: Text(label),
-        selected: selected,
-        showCheckmark: false,
-        onSelected: (_) => onTap(),
-        selectedColor: colorScheme.primary,
-        labelStyle: TextStyle(
-          color: selected ? Colors.white : colorScheme.onSurface,
-          fontWeight: FontWeight.w600,
-          fontSize: 12,
+    final ColorScheme cs = Theme.of(context).colorScheme;
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        margin: const EdgeInsets.only(right: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: selected ? cs.primary : Colors.transparent,
+              width: 2.5,
+            ),
+          ),
         ),
-        side: BorderSide(
-          color: selected ? colorScheme.primary : colorScheme.outlineVariant,
+        alignment: Alignment.center,
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+            color: selected ? cs.onSurface : const Color(0xFF747474),
+          ),
         ),
       ),
     );

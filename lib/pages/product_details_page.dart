@@ -19,135 +19,288 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
-  bool _animated = false;
+  int _quantity = 1;
+  final TextEditingController _obsController = TextEditingController();
+
+  @override
+  void dispose() {
+    _obsController.dispose();
+    super.dispose();
+  }
 
   void _addToCart() {
-    context.read<CartProvider>().addProduct(widget.product);
-    setState(() => _animated = true);
-    Future<void>.delayed(const Duration(milliseconds: 500), () {
-      if (mounted) setState(() => _animated = false);
-    });
+    final CartProvider cart = context.read<CartProvider>();
+    for (int i = 0; i < _quantity; i++) {
+      cart.addProduct(widget.product);
+    }
     final ScaffoldMessengerState messenger = ScaffoldMessenger.of(context);
     messenger.hideCurrentSnackBar();
     messenger.showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(milliseconds: 800),
-        content: Text('${widget.product.name} adicionado ao carrinho!'),
+        duration: const Duration(milliseconds: 900),
+        content: Text(
+          '$_quantity× ${widget.product.name} adicionado ao carrinho!',
+        ),
       ),
     );
+    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
     final Product product = widget.product;
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final ColorScheme cs = Theme.of(context).colorScheme;
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            expandedHeight: 220,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Hero(
-                tag: 'product-${product.id}',
-                child: AppProductImage(
-                  source: product.image,
-                  fit: BoxFit.cover,
-                  cacheWidth: 1200,
+      body: Stack(
+        children: <Widget>[
+          CustomScrollView(
+            slivers: <Widget>[
+              // ── Imagem do produto ────────────────────────────
+              SliverAppBar(
+                expandedHeight: 260,
+                pinned: true,
+                automaticallyImplyLeading: false,
+                backgroundColor: Colors.transparent,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Hero(
+                    tag: 'product-${product.id}',
+                    child: AppProductImage(
+                      source: product.image,
+                      fit: BoxFit.cover,
+                      cacheWidth: 1200,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(18, 18, 18, 40),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    product.name,
-                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    product.description,
-                    style: TextStyle(
-                      color: colorScheme.onSurfaceVariant,
-                      fontSize: 14,
-                      height: 1.4,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    Formatters.currency(product.price),
-                    style: TextStyle(
-                      color: colorScheme.secondary,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Row(
+
+              // ── Conteúdo ─────────────────────────────────────
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(18, 20, 18, 120),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Icon(Icons.restaurant_menu_rounded,
-                          size: 18, color: colorScheme.primary),
-                      const SizedBox(width: 8),
+                      // Nome
                       Text(
-                        'Ingredientes',
-                        style: TextStyle(
-                          fontSize: 16,
+                        product.name,
+                        style: const TextStyle(
+                          fontSize: 22,
                           fontWeight: FontWeight.w800,
-                          color: colorScheme.primary,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      // Descrição
+                      Text(
+                        product.description,
+                        style: TextStyle(
+                          color: cs.onSurfaceVariant,
+                          fontSize: 14,
+                          height: 1.4,
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+                      // Preço
+                      Text(
+                        Formatters.currency(product.price),
+                        style: TextStyle(
+                          // Branco no dark, preto no light — igual ao Tako
+                          color: isDark ? Colors.white : cs.onSurface,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+
+                      // ── Ingredientes ──────────────────────────
+                      if (product.ingredients.isNotEmpty) ...<Widget>[
+                        Row(
+                          children: <Widget>[
+                            Icon(Icons.restaurant_menu_rounded,
+                                size: 17, color: cs.primary),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Ingredientes',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                                color: cs.primary,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(14),
+                            child: Column(
+                              children: product.ingredients
+                                  .map(
+                                    (String ingredient) => Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 5),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.check_circle_rounded,
+                                            size: 18,
+                                            color: cs.primary,
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Expanded(
+                                            child: Text(
+                                              ingredient,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                      ],
+
+                      // ── Observação ────────────────────────────
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          const Text(
+                            'Alguma observação?',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Text(
+                            '${_obsController.text.length}/500',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: cs.primary,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: _obsController,
+                        maxLength: 500,
+                        maxLines: 3,
+                        onChanged: (_) => setState(() {}),
+                        decoration: const InputDecoration(
+                          counterText: '',
+                          hintText:
+                              'Ex: sem cebola, molho à parte...',
+                          contentPadding: EdgeInsets.all(12),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(14),
-                      child: Column(
-                        children: product.ingredients
-                            .map(
-                              (String ingredient) => Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 5),
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.check_circle_rounded,
-                                      size: 18,
-                                      color: colorScheme.primary,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Expanded(
-                                      child: Text(
-                                        ingredient,
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                            .toList(),
-                      ),
+                ),
+              ),
+            ],
+          ),
+
+          // ── Botão fechar (X) circular — canto superior direito ──
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 8,
+            right: 12,
+            child: GestureDetector(
+              onTap: () => Navigator.of(context).pop(),
+              child: Container(
+                width: 34,
+                height: 34,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.close_rounded,
+                  size: 18,
+                  color: Colors.black87,
+                ),
+              ),
+            ),
+          ),
+
+          // ── Barra inferior: quantidade + botão Adicionar ──────
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              padding: EdgeInsets.only(
+                left: 18,
+                right: 18,
+                top: 12,
+                bottom: MediaQuery.of(context).padding.bottom + 12,
+              ),
+              child: Row(
+                children: <Widget>[
+                  // ─ Seletor de quantidade ─────────────────────
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: cs.outline.withValues(alpha: 0.5)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        _QtyButton(
+                          icon: Icons.remove,
+                          onTap: _quantity > 1
+                              ? () => setState(() => _quantity--)
+                              : null,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 14),
+                          child: Text(
+                            '$_quantity',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        _QtyButton(
+                          icon: Icons.add,
+                          onTap: () => setState(() => _quantity++),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 28),
-                  AnimatedScale(
-                    scale: _animated ? 1.02 : 1,
-                    duration: const Duration(milliseconds: 250),
-                    child: FilledButton.icon(
-                      onPressed: _addToCart,
-                      style: FilledButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 52),
+                  const SizedBox(width: 12),
+                  // ─ Botão Adicionar (preto, estilo Tako) ──────
+                  Expanded(
+                    child: SizedBox(
+                      height: 48,
+                      child: ElevatedButton(
+                        onPressed: _addToCart,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          textStyle: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        child: Text(
+                          'Adicionar  ${Formatters.currency(product.price * _quantity)}',
+                        ),
                       ),
-                      icon: const Icon(Icons.add_shopping_cart_rounded),
-                      label: const Text('Adicionar ao carrinho'),
                     ),
                   ),
                 ],
@@ -160,3 +313,30 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   }
 }
 
+// ── Botão de quantidade (+ / -) ───────────────────────────────────────────
+
+class _QtyButton extends StatelessWidget {
+  const _QtyButton({required this.icon, required this.onTap});
+
+  final IconData icon;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 40,
+        height: 44,
+        alignment: Alignment.center,
+        child: Icon(
+          icon,
+          size: 18,
+          color: onTap == null
+              ? Theme.of(context).colorScheme.outline
+              : Theme.of(context).colorScheme.onSurface,
+        ),
+      ),
+    );
+  }
+}

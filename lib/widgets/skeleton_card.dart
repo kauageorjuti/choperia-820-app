@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
+/// Skeleton no estilo horizontal (igual ao novo ProductCard).
 class SkeletonCard extends StatefulWidget {
   const SkeletonCard({super.key});
 
@@ -31,32 +32,35 @@ class _SkeletonCardState extends State<SkeletonCard>
     return AnimatedBuilder(
       animation: _controller,
       builder: (_, _) {
-        final double opacity = 0.25 + (_controller.value * 0.35);
-        return Card(
-          child: Column(
+        final double opacity = 0.15 + (_controller.value * 0.25);
+        final Color shade = Colors.grey.withValues(alpha: opacity);
+        return Container(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Expanded(
-                child: Container(
-                  width: double.infinity,
-                  color: Colors.grey.withValues(alpha: opacity),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(height: 14, width: double.infinity, color: shade),
+                    const SizedBox(height: 8),
+                    Container(height: 12, width: 200, color: shade),
+                    const SizedBox(height: 6),
+                    Container(height: 12, width: 160, color: shade),
+                    const SizedBox(height: 14),
+                    Container(height: 13, width: 70, color: shade),
+                  ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      height: 10,
-                      width: double.infinity,
-                      color: Colors.grey.withValues(alpha: opacity),
-                    ),
-                    const SizedBox(height: 8),
-                    Container(
-                      height: 10,
-                      width: 140,
-                      color: Colors.grey.withValues(alpha: opacity),
-                    ),
-                  ],
+              const SizedBox(width: 12),
+              Container(
+                width: 112,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: shade,
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ],
@@ -66,4 +70,3 @@ class _SkeletonCardState extends State<SkeletonCard>
     );
   }
 }
-

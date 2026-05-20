@@ -10,100 +10,76 @@ class ProductCard extends StatelessWidget {
     super.key,
     required this.product,
     required this.onTap,
-    required this.onAdd,
+    // onAdd mantido por compatibilidade mas não é usado visualmente
+    this.onAdd,
   });
 
   final Product product;
   final VoidCallback onTap;
-  final VoidCallback onAdd;
+  final VoidCallback? onAdd;
 
   @override
   Widget build(BuildContext context) {
     final ColorScheme cs = Theme.of(context).colorScheme;
+
     return TapScale(
       onTap: onTap,
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        margin: EdgeInsets.zero,
-        child: Column(
+      child: Container(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            // Image
+            // ── Info (esquerda) ──────────────────────────────
             Expanded(
-              flex: 5,
-              child: Stack(
-                fit: StackFit.expand,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Hero(
-                    tag: 'product-${product.id}',
-                    child: AppProductImage(
-                      source: product.image,
-                      fit: BoxFit.cover,
-                      cacheWidth: 400,
+                  Text(
+                    product.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
+                      height: 1.3,
                     ),
                   ),
-                  // Price badge
-                  Positioned(
-                    right: 6,
-                    top: 6,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-                      decoration: BoxDecoration(
-                        color: cs.primary,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        Formatters.currency(product.price),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 10,
-                        ),
-                      ),
+                  const SizedBox(height: 4),
+                  Text(
+                    product.description,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: cs.onSurfaceVariant,
+                      height: 1.35,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    Formatters.currency(product.price),
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: cs.onSurface,
                     ),
                   ),
                 ],
               ),
             ),
-            // Info
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      product.name,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12, height: 1.2),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      product.description,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: cs.onSurfaceVariant,
-                        height: 1.2,
-                      ),
-                    ),
-                    const Spacer(),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 28,
-                      child: FilledButton(
-                        onPressed: onAdd,
-                        style: FilledButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          textStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700),
-                        ),
-                        child: const Text('Adicionar'),
-                      ),
-                    ),
-                  ],
+            const SizedBox(width: 12),
+            // ── Imagem (direita) ─────────────────────────────
+            Hero(
+              tag: 'product-${product.id}',
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: AppProductImage(
+                  source: product.image,
+                  width: 112,
+                  height: 80,
+                  fit: BoxFit.cover,
+                  cacheWidth: 300,
                 ),
               ),
             ),

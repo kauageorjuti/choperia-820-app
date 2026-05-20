@@ -13,6 +13,7 @@ import '../pages/product_details_page.dart';
 import '../pages/register_page.dart';
 import '../pages/settings_page.dart';
 import '../pages/splash_page.dart';
+import '../pages/store_info_page.dart';
 
 class AppRoutes {
   static const String splash = '/';
@@ -27,6 +28,7 @@ class AppRoutes {
   static const String orderConfirmation = '/order-confirmation';
   static const String about = '/about';
   static const String settingsPage = '/settings';
+  static const String storeInfo = '/store-info';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -54,6 +56,8 @@ class AppRoutes {
         return _route(OrderConfirmationPage(orderId: orderId), settings);
       case about:
         return _route(const AboutPage(), settings);
+      case storeInfo:
+        return _route(const StoreInfoPage(), settings);
       case settingsPage:
         return _route(const SettingsPage(), settings);
       default:

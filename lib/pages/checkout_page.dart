@@ -41,7 +41,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
     if (_selectedType == OrderType.delivery && _addressController.text.trim().length < 8) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Informe um endereco de entrega valido.')),
+        const SnackBar(content: Text('Informe um endereço de entrega válido.')),
       );
       return;
     }
@@ -55,6 +55,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           total: finalTotal,
           type: _selectedType,
           address: _selectedType == OrderType.delivery ? _addressController.text.trim() : null,
+          observation: _notesController.text.trim().isEmpty ? null : _notesController.text.trim(),
         );
     cart.clear();
 
@@ -116,7 +117,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               if (_selectedType == OrderType.delivery)
                 _SectionCard(
                   icon: Icons.location_on_outlined,
-                  title: 'Endereco de Entrega',
+                  title: 'Endereço de Entrega',
                   child: TextField(
                     controller: _addressController,
                     minLines: 2,
@@ -134,14 +135,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   children: <Widget>[
                     _PaymentOptionTile(
                       icon: Icons.credit_card,
-                      label: 'Cartao de Credito',
+                      label: 'Cartão de Crédito',
                       selected: _paymentMethod == PaymentMethod.credit,
                       onTap: () => setState(() => _paymentMethod = PaymentMethod.credit),
                     ),
                     const SizedBox(height: 10),
                     _PaymentOptionTile(
                       icon: Icons.credit_card_outlined,
-                      label: 'Cartao de Debito',
+                      label: 'Cartão de Debito',
                       selected: _paymentMethod == PaymentMethod.debit,
                       onTap: () => setState(() => _paymentMethod = PaymentMethod.debit),
                     ),
@@ -165,7 +166,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               const SizedBox(height: 12),
               _SectionCard(
                 icon: Icons.note_alt_outlined,
-                title: 'Observacoes (Opcional)',
+                title: 'Observações (Opcional)',
                 child: TextField(
                   controller: _notesController,
                   minLines: 2,
@@ -173,6 +174,57 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   decoration: const InputDecoration(
                     hintText: 'Ex: sem sal, sem cebola, etc.',
                   ),
+                ),
+              ),
+              _SectionCard(
+                icon: Icons.shopping_bag_outlined,
+                title: 'Itens do Pedido',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: cart.items.map((item) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Text(
+                                  '${item.quantity}x ${item.product.name}',
+                                  style: const TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                              Text(
+                                Formatters.currency(item.subtotal),
+                                style: const TextStyle(fontWeight: FontWeight.w700),
+                              ),
+                            ],
+                          ),
+                          if (item.selectedPortion != null)
+                            Text(
+                              item.selectedPortion!.label,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          if (item.observation != null)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 2),
+                              child: Text(
+                                'Obs: ${item.observation}',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
               const SizedBox(height: 12),
@@ -231,9 +283,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
           Text(
             value,
             style: TextStyle(
-              fontSize: bold ? 17 : 14,
+              fontSize: bold ? 20 : 14,
               fontWeight: bold ? FontWeight.w900 : FontWeight.w500,
-              color: bold ? Theme.of(context).colorScheme.secondary : null,
+              color: bold
+                  ? (Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black)
+                  : null,
             ),
           ),
         ],
@@ -253,7 +309,7 @@ class _CheckoutSteps extends StatelessWidget {
         Container(height: 1, width: 28, color: Theme.of(context).colorScheme.outlineVariant),
         const Expanded(child: _StepItem(index: 2, label: 'Pagamento', active: true)),
         Container(height: 1, width: 28, color: Theme.of(context).colorScheme.outlineVariant),
-        const Expanded(child: _StepItem(index: 3, label: 'Confirmacao', active: false)),
+        const Expanded(child: _StepItem(index: 3, label: 'Confirmação', active: false)),
       ],
     );
   }

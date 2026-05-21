@@ -57,14 +57,28 @@ class ProductCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Text(
-                    Formatters.currency(product.price),
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: cs.onSurface,
+                  if (product.hasPortions)
+                    // Mostra preço da 1ª e 2ª porção lado a lado
+                    Wrap(
+                      spacing: 8,
+                      children: product.portions!.map((por) => Text(
+                        '${por.label.split(' ').first}: ${Formatters.currency(por.price)}',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: cs.onSurface,
+                        ),
+                      )).toList(),
+                    )
+                  else
+                    Text(
+                      Formatters.currency(product.price),
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: cs.onSurface,
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),

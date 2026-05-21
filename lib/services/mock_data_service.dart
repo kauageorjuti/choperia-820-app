@@ -1,4 +1,5 @@
-﻿import '../models/product.dart';
+import '../models/product.dart';
+import '../models/product_portion.dart';
 
 class MockDataService {
   Future<List<Product>> fetchProducts() async {
@@ -9,6 +10,7 @@ class MockDataService {
   static const List<String> categories = <String>[
     'Tudo',
     'Couvert Simples',
+    'Couvert Especial',
     'Petiscos',
     'Saladas',
     'Lanche 820',
@@ -35,7 +37,7 @@ class MockDataService {
     Product(
       id: 'cv-2',
       name: 'Azeitonas Verdes',
-      description: 'Porcao fria para acompanhar o chopp.',
+      description: 'Porção fria para acompanhar o chopp.',
       price: 17.40,
       image: 'assets/images/produtos/azeitonaverde.jpg',
       category: 'Couvert Simples',
@@ -58,6 +60,79 @@ class MockDataService {
       image: 'assets/images/produtos/mussarela.jpg',
       category: 'Couvert Simples',
       ingredients: <String>['Mussarela fatiada'],
+    ),
+    Product(
+      id: 'cv-5',
+      name: 'Lombo Canadense',
+      description: 'Lombo canadense fatiado, servido frio.',
+      price: 17.40,
+      image: 'assets/images/produtos/adicionais.jpg',
+      category: 'Couvert Simples',
+      ingredients: <String>['Lombo canadense'],
+    ),
+    Product(
+      id: 'cv-6',
+      name: 'Mandioca Cozida',
+      description: 'Mandioca cozida no ponto, macia e saborosa.',
+      price: 17.40,
+      image: 'assets/images/produtos/adicionais.jpg',
+      category: 'Couvert Simples',
+      ingredients: <String>['Mandioca', 'Sal'],
+    ),
+    Product(
+      id: 'cv-7',
+      name: 'Ovos de Codorna',
+      description: 'Porção de ovos de codorna cozidos.',
+      price: 17.40,
+      image: 'assets/images/produtos/adicionais.jpg',
+      category: 'Couvert Simples',
+      ingredients: <String>['Ovos de codorna'],
+    ),
+    Product(
+      id: 'cv-8',
+      name: 'Presunto',
+      description: 'Presunto fatiado servido frio.',
+      price: 17.40,
+      image: 'assets/images/produtos/adicionais.jpg',
+      category: 'Couvert Simples',
+      ingredients: <String>['Presunto fatiado'],
+    ),
+    // ── Couvert Especial ───────────────────────────────────────────────────
+    Product(
+      id: 'ce-1',
+      name: 'Salame Fatiado',
+      description: 'Salame italiano fatiado, servido frio.',
+      price: 19.90,
+      image: 'assets/images/produtos/adicionais.jpg',
+      category: 'Couvert Especial',
+      ingredients: <String>['Salame italiano'],
+    ),
+    Product(
+      id: 'ce-2',
+      name: 'Azeitonas Pretas',
+      description: 'Porção de azeitonas pretas temperadas.',
+      price: 19.90,
+      image: 'assets/images/produtos/adicionais.jpg',
+      category: 'Couvert Especial',
+      ingredients: <String>['Azeitonas pretas', 'Temperos da casa'],
+    ),
+    Product(
+      id: 'ce-3',
+      name: 'Copa Fatiada',
+      description: 'Copa fatiada artesanalmente, servida fria.',
+      price: 19.90,
+      image: 'assets/images/produtos/adicionais.jpg',
+      category: 'Couvert Especial',
+      ingredients: <String>['Copa fatiada'],
+    ),
+    Product(
+      id: 'ce-4',
+      name: 'Parmesão',
+      description: 'Parmesão em porcao, servida fria.',
+      price: 19.90,
+      image: 'assets/images/produtos/adicionais.jpg',
+      category: 'Couvert Especial',
+      ingredients: <String>['Queijo parmesao'],
     ),
     Product(
       id: 'pt-1',
@@ -144,7 +219,7 @@ class MockDataService {
     Product(
       id: 'pt-9',
       name: 'Bolinho de Costela',
-      description: 'Porcao de bolinhos artesanais.',
+      description: 'Porção de bolinhos artesanais.',
       price: 37.90,
       image: 'assets/images/produtos/bolinhodecostela.jpg',
       category: 'Petiscos',
@@ -171,7 +246,7 @@ class MockDataService {
     Product(
       id: 'pt-12',
       name: 'Medalhão de Frango',
-      description: 'Porcao temperada.',
+      description: 'Porção temperada.',
       price: 35.90,
       image: 'assets/images/produtos/medalhaodefrango.jpg',
       category: 'Petiscos',
@@ -195,14 +270,32 @@ class MockDataService {
       category: 'Petiscos',
       ingredients: <String>['Massa de pastel', 'Mussarela'],
     ),
-     Product(
+    Product(
       id: 'pt-15',
       name: 'Fritas',
       description: 'Batata Frita .',
       price: 29.90,
-      image: 'assets/images/produtos/fritas.jpg', 
+      image: 'assets/images/produtos/fritas.jpg',
       category: 'Petiscos',
       ingredients: <String>['Batata Frita'],
+    ),
+    Product(
+      id: 'pt-16',
+      name: 'Fritas com Cheddar',
+      description: 'Batata frita coberta com molho cheddar cremoso.',
+      price: 39.90,
+      image: 'assets/images/produtos/fritas.jpg',
+      category: 'Petiscos',
+      ingredients: <String>['Batata frita', 'Cheddar cremoso'],
+    ),
+    Product(
+      id: 'pt-17',
+      name: 'Jiló Frito Empanado',
+      description: 'Jiló empanado e frito na hora, crocante por fora.',
+      price: 29.90,
+      image: 'assets/images/produtos/adicionais.jpg',
+      category: 'Petiscos',
+      ingredients: <String>['Jilo', 'Empanado', 'Sal', 'Tempero da casa'],
     ),
     Product(
       id: 'sd-1',
@@ -306,7 +399,7 @@ class MockDataService {
     Product(
       id: 'pq-1',
       name: 'Picanha no Palito com Mandioca',
-      description: 'Acompanha vinagrete e pao.',
+      description: 'Acompanha vinagrete e pão.',
       price: 89.90,
       image: 'assets/images/produtos/fritas.jpg',
       category: 'Porcoes Quentes',
@@ -315,7 +408,7 @@ class MockDataService {
     Product(
       id: 'pq-2',
       name: 'File Mignon no Palito Acebolado',
-      description: 'Acompanha pao.',
+      description: 'Acompanha pão.',
       price: 65.90,
       image: 'assets/images/produtos/fritas.jpg',
       category: 'Porcoes Quentes',
@@ -324,7 +417,7 @@ class MockDataService {
     Product(
       id: 'pq-3',
       name: 'Maminha ao Molho Madeira',
-      description: 'Com champignon, cebola, tomate e pao.',
+      description: 'Com champignon, cebola, tomate e pão.',
       price: 57.90,
       image: 'assets/images/produtos/fritas.jpg',
       category: 'Porcoes Quentes',
@@ -340,7 +433,7 @@ class MockDataService {
     Product(
       id: 'pq-4',
       name: 'Maminha no Palito Salteada',
-      description: 'Com cebola, mandioca e pao.',
+      description: 'Com cebola, mandioca e pão.',
       price: 55.90,
       image:'assets/images/produtos/fritas.jpg',
       category: 'Porcoes Quentes',
@@ -349,7 +442,7 @@ class MockDataService {
     Product(
       id: 'pq-5',
       name: 'Fraldinha no Palito',
-      description: 'Com legumes, mandioca e pao.',
+      description: 'Com Vinagrete, mandioca e pão.',
       price: 55.90,
       image: 'assets/images/produtos/fritas.jpg',
       category: 'Porcoes Quentes',
@@ -358,7 +451,7 @@ class MockDataService {
     Product(
       id: 'pq-6',
       name: 'Carne Seca Acebolada',
-      description: 'Acompanha mandioca e pao.',
+      description: 'Acompanha pão.',
       price: 49.90,
       image: 'assets/images/produtos/fritas.jpg',
       category: 'Porcoes Quentes',
@@ -390,8 +483,8 @@ class MockDataService {
     ),
     Product(
       id: 'pq-9',
-      name: 'Croc de (Tilapia Crocante com Queijo)',
-      description: 'Tilapia crocante com recheio de queijo.',
+      name: 'Croc de (Tilápia Crocante com Queijo)',
+      description: 'Tilápia crocante com recheio de queijo.',
       price: 49.95,
       image: 'assets/images/produtos/fritas.jpg',
       category: 'Porcoes Quentes',
@@ -445,7 +538,7 @@ class MockDataService {
     Product(
       id: 'pq-15',
       name: 'Calabresa Acebolada com Tomate',
-      description: 'Acompanha pao.',
+      description: 'Acompanha pão.',
       price: 34.90,
       image: 'assets/images/produtos/fritas.jpg',
       category: 'Porcoes Quentes',
@@ -454,7 +547,7 @@ class MockDataService {
     Product(
       id: 'ad-1',
       name: 'Adicional de Bacon',
-      description: 'Porcao adicional de bacon.',
+      description: 'Porção adicional de bacon.',
       price: 9.95,
       image: _adicionais,
       category: 'Adicionais',
@@ -500,10 +593,14 @@ class MockDataService {
       id: 'pr-1',
       name: 'Strogonoff de Frango',
       description: 'Arroz, frango e batata palha.',
-      price: 51.90,
+      price: 39.90,
       image: 'assets/images/produtos/fritas.jpg',
       category: 'Pratos',
       ingredients: <String>['Frango', 'Creme de leite', 'Molho', 'Arroz', 'Batata palha'],
+      portions: <ProductPortion>[
+        ProductPortion(label: '1 Pessoa', price: 39.90),
+        ProductPortion(label: '2 Pessoas', price: 69.90),
+      ],
     ),
     Product(
       id: 'pr-2',
@@ -513,12 +610,16 @@ class MockDataService {
       image: 'assets/images/produtos/fritas.jpg',
       category: 'Pratos',
       ingredients: <String>['Carne', 'Creme de leite', 'Molho', 'Arroz', 'Batata palha'],
+      portions: <ProductPortion>[
+        ProductPortion(label: '1 Pessoa', price: 51.90),
+        ProductPortion(label: '2 Pessoas', price: 89.90),
+      ],
     ),
     Product(
       id: 'pr-3',
       name: 'File de Frango a Parmegiana',
       description: 'Com arroz e fritas.',
-      price: 61.90,
+      price: 51.90,
       image: 'assets/images/produtos/fritas.jpg',
       category: 'Pratos',
       ingredients: <String>[
@@ -528,12 +629,16 @@ class MockDataService {
         'Arroz',
         'Batata frita',
       ],
+      portions: <ProductPortion>[
+        ProductPortion(label: '1 Pessoa', price: 51.90),
+        ProductPortion(label: '2 Pessoas', price: 89.90),
+      ],
     ),
     Product(
       id: 'pr-4',
       name: 'File de Tilapia a Parmegiana',
       description: 'Com arroz e fritas.',
-      price: 64.90,
+      price: 61.90,
       image: 'assets/images/produtos/fritas.jpg',
       category: 'Pratos',
       ingredients: <String>[
@@ -542,6 +647,10 @@ class MockDataService {
         'Queijo',
         'Arroz',
         'Batata frita',
+      ],
+      portions: <ProductPortion>[
+        ProductPortion(label: '1 Pessoa', price: 61.90),
+        ProductPortion(label: '2 Pessoas', price: 99.90),
       ],
     ),
     Product(
@@ -558,6 +667,10 @@ class MockDataService {
         'Arroz',
         'Batata frita',
       ],
+      portions: <ProductPortion>[
+        ProductPortion(label: '1 Pessoa', price: 64.90),
+        ProductPortion(label: '2 Pessoas', price: 109.90),
+      ],
     ),
     Product(
       id: 'pr-6',
@@ -567,6 +680,10 @@ class MockDataService {
       image: 'assets/images/produtos/fritas.jpg',
       category: 'Pratos',
       ingredients: <String>['Picanha fatiada', 'Mandioca ou fritas', 'Vinagrete'],
+      // Somente para 2 pessoas conforme cardapio fisico
+      portions: <ProductPortion>[
+        ProductPortion(label: '2 Pessoas', price: 89.90),
+      ],
     ),
   ];
 }

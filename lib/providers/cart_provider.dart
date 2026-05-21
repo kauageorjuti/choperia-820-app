@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/cart_item.dart';
 import '../models/product.dart';
+import '../models/product_portion.dart';
 
 class CartProvider extends ChangeNotifier {
   final Map<String, CartItem> _items = <String, CartItem>{};
@@ -15,32 +16,39 @@ class CartProvider extends ChangeNotifier {
         (double total, CartItem item) => total + item.subtotal,
       );
 
-  void addProduct(Product product) {
-    if (_items.containsKey(product.id)) {
-      _items[product.id]!.quantity++;
+  void addProduct(Product product, {ProductPortion? portion, String? observation}) {
+    final CartItem temp = CartItem(product: product, selectedPortion: portion);
+    final String key = temp.cartKey;
+    if (_items.containsKey(key)) {
+      _items[key]!.quantity++;
     } else {
-      _items[product.id] = CartItem(product: product);
+      _items[key] = CartItem(
+        product: product,
+        selectedPortion: portion,
+        observation: observation?.trim().isEmpty == true ? null : observation?.trim(),
+      );
     }
     notifyListeners();
   }
 
-  void removeProduct(String productId) {
-    _items.remove(productId);
+  /// Remove item pelo cartKey (ex: "pr-1__2 Pessoas" ou "pt-1").
+  void removeProduct(String cartKey) {
+    _items.remove(cartKey);
     notifyListeners();
   }
 
-  void incrementQuantity(String productId) {
-    final CartItem? item = _items[productId];
+  void incrementQuantity(String cartKey) {
+    final CartItem? item = _items[cartKey];
     if (item == null) return;
     item.quantity++;
     notifyListeners();
   }
 
-  void decrementQuantity(String productId) {
-    final CartItem? item = _items[productId];
+  void decrementQuantity(String cartKey) {
+    final CartItem? item = _items[cartKey];
     if (item == null) return;
     if (item.quantity <= 1) {
-      _items.remove(productId);
+      _items.remove(cartKey);
     } else {
       item.quantity--;
     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/product.dart';
+import '../models/product_portion.dart';
 import '../providers/cart_provider.dart';
 import '../utils/formatters.dart';
 import '../widgets/app_product_image.dart';
@@ -20,7 +21,17 @@ class ProductDetailsPage extends StatefulWidget {
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   int _quantity = 1;
+  ProductPortion? _selectedPortion;
   final TextEditingController _obsController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Pré-seleciona a primeira porção se o produto tiver porções
+    if (widget.product.hasPortions) {
+      _selectedPortion = widget.product.portions!.first;
+    }
+  }
 
   @override
   void dispose() {
@@ -30,8 +41,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
   void _addToCart() {
     final CartProvider cart = context.read<CartProvider>();
+    final String? obs =
+        _obsController.text.trim().isEmpty ? null : _obsController.text.trim();
     for (int i = 0; i < _quantity; i++) {
-      cart.addProduct(widget.product);
+      cart.addProduct(widget.product, portion: _selectedPortion, observation: obs);
     }
     final ScaffoldMessengerState messenger = ScaffoldMessenger.of(context);
     messenger.hideCurrentSnackBar();
@@ -40,12 +53,15 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         behavior: SnackBarBehavior.floating,
         duration: const Duration(milliseconds: 900),
         content: Text(
-          '$_quantity× ${widget.product.name} adicionado ao carrinho!',
+          '$_quantity× ${widget.product.name}${_selectedPortion != null ? ' (${_selectedPortion!.label})' : ''} adicionado ao carrinho!',
         ),
       ),
     );
     Navigator.of(context).pop();
   }
+
+  /// Preço unitário considerando a porção selecionada
+  double get _unitPrice => _selectedPortion?.price ?? widget.product.price;
 
   @override
   Widget build(BuildContext context) {
@@ -102,17 +118,81 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         ),
                       ),
                       const SizedBox(height: 14),
-                      // Preço
-                      Text(
-                        Formatters.currency(product.price),
-                        style: TextStyle(
-                          // Branco no dark, preto no light — igual ao Tako
-                          color: isDark ? Colors.white : cs.onSurface,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
+                      // Preço ou Seletor de Porção
+                      if (product.hasPortions) ...<Widget>[
+                        Text(
+                          'Tamanho da porção',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: cs.primary,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 24),
+                        const SizedBox(height: 8),
+                        ...product.portions!.map((ProductPortion por) {
+                          final bool isSelected = _selectedPortion?.label == por.label;
+                          return GestureDetector(
+                            onTap: () => setState(() => _selectedPortion = por),
+                            child: Container(
+                              margin: const EdgeInsets.only(bottom: 8),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 14, vertical: 12),
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? cs.primaryContainer
+                                    : cs.surfaceContainerHighest,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: isSelected ? cs.primary : Colors.transparent,
+                                  width: 1.5,
+                                ),
+                              ),
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(
+                                    isSelected
+                                        ? Icons.radio_button_checked_rounded
+                                        : Icons.radio_button_off_rounded,
+                                    size: 20,
+                                    color: isSelected ? cs.primary : cs.onSurfaceVariant,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Text(
+                                      por.label,
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: isSelected
+                                            ? FontWeight.w700
+                                            : FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    Formatters.currency(por.price),
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700,
+                                      color: isSelected ? cs.primary : cs.onSurface,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }),
+                        const SizedBox(height: 10),
+                      ] else ...<Widget>[
+                        Text(
+                          Formatters.currency(product.price),
+                          style: TextStyle(
+                            color: isDark ? Colors.white : cs.onSurface,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                      ],
 
                       // ── Ingredientes ──────────────────────────
                       if (product.ingredients.isNotEmpty) ...<Widget>[
@@ -298,7 +378,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           ),
                         ),
                         child: Text(
-                          'Adicionar  ${Formatters.currency(product.price * _quantity)}',
+                          'Adicionar  ${Formatters.currency(_unitPrice * _quantity)}',
                         ),
                       ),
                     ),

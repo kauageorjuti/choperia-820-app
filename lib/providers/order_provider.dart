@@ -21,7 +21,12 @@ class OrderProvider extends ChangeNotifier {
     await Future<void>.delayed(const Duration(milliseconds: 800));
     final List<CartItem> snapshotItems = items
         .map(
-          (CartItem i) => CartItem(product: i.product, quantity: i.quantity),
+          (CartItem i) => CartItem(
+            product: i.product,
+            quantity: i.quantity,
+            selectedPortion: i.selectedPortion,
+            observation: i.observation,
+          ),
         )
         .toList();
 

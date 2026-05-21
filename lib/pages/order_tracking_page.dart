@@ -74,6 +74,17 @@ class OrderTrackingPage extends StatelessWidget {
                           if (order.address != null) Text('Endereco: ${order.address}'),
                           const SizedBox(height: 6),
                           Text('Total: ${Formatters.currency(order.total)}'),
+                          if (order.observation != null) ...<Widget>[
+                            const SizedBox(height: 10),
+                            Text(
+                              'Observacao Geral:\n${order.observation}',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                     ),
@@ -92,8 +103,33 @@ class OrderTrackingPage extends StatelessWidget {
                           const SizedBox(height: 10),
                           ...order.items.map(
                             (item) => Padding(
-                              padding: const EdgeInsets.only(bottom: 6),
-                              child: Text('${item.quantity}x ${item.product.name}'),
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text('${item.quantity}x ${item.product.name}'),
+                                  if (item.selectedPortion != null)
+                                    Text(
+                                      item.selectedPortion!.label,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                      ),
+                                    ),
+                                  if (item.observation != null)
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 2),
+                                      child: Text(
+                                        'Obs: ${item.observation}',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
                             ),
                           ),
                         ],

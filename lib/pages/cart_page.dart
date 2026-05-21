@@ -94,11 +94,9 @@ class CartPage extends StatelessWidget {
                     final item = cart.items[index];
                     return _CartItemRow(
                       item: item,
-                      onRemove: () => cart.removeProduct(item.product.id),
-                      onIncrement: () =>
-                          cart.incrementQuantity(item.product.id),
-                      onDecrement: () =>
-                          cart.decrementQuantity(item.product.id),
+                      onRemove: () => cart.removeProduct(item.cartKey),
+                      onIncrement: () => cart.incrementQuantity(item.cartKey),
+                      onDecrement: () => cart.decrementQuantity(item.cartKey),
                     );
                   },
                 ),
@@ -152,13 +150,38 @@ class _CartItemRow extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Expanded(
-                          child: Text(
-                            '${item.quantity}x ${item.product.name}',
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              height: 1.3,
-                            ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                '${item.quantity}x ${item.product.name}',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.3,
+                                ),
+                              ),
+                              if (item.selectedPortion != null)
+                                Text(
+                                  item.selectedPortion!.label,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: cs.onSurfaceVariant,
+                                  ),
+                                ),
+                              if (item.observation != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 2),
+                                  child: Text(
+                                    'Obs: ${item.observation}',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: cs.onSurfaceVariant,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -380,9 +403,12 @@ class _CartSummary extends StatelessWidget {
             label: 'Total',
             value: Formatters.currency(cart.totalPrice),
             labelStyle: const TextStyle(
-                fontSize: 16, fontWeight: FontWeight.w700),
-            valueStyle: const TextStyle(
-                fontSize: 16, fontWeight: FontWeight.w800),
+                fontSize: 18, fontWeight: FontWeight.w700),
+            valueStyle: TextStyle(
+                fontSize: 20, 
+                fontWeight: FontWeight.w900,
+                color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+            ),
           ),
           const SizedBox(height: 4),
           // Botão Continuar pedido — preto como Tako

@@ -24,6 +24,8 @@ class MockDataService {
   static const String menu = 'assets/images/cardapio.jpg';
   static const String _adicionais = 'assets/images/produtos/adicionais.jpg';
 
+  static List<Product> get products => _products;
+
   static final List<Product> _products = <Product>[
     Product(
       id: 'cv-1',

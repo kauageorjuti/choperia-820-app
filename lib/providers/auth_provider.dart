@@ -4,6 +4,22 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../models/app_user.dart';
 
 class AuthProvider extends ChangeNotifier {
+  AuthProvider() {
+    _firebaseAuth.authStateChanges().listen((User? user) {
+      if (user != null) {
+        _currentUser = AppUser(
+          id: user.uid,
+          name: user.displayName ?? 'Cliente',
+          email: user.email ?? '',
+          phone: '', // Pode ser puxado do Firestore depois, se necessário
+        );
+      } else {
+        _currentUser = null;
+      }
+      notifyListeners();
+    });
+  }
+
   AppUser? _currentUser;
   bool _isLoading = false;
 
@@ -35,6 +51,7 @@ class AuthProvider extends ChangeNotifier {
         password: password,
       );
       _currentUser = AppUser(
+        id: credential.user!.uid,
         name: credential.user?.displayName ?? 'Cliente Choperia',
         email: credential.user?.email ?? email,
         phone: '',
@@ -82,6 +99,7 @@ class AuthProvider extends ChangeNotifier {
 
       // Salva o usuário logado
       _currentUser = AppUser(
+        id: userCred.user!.uid,
         name: userCred.user?.displayName ?? 'Cliente Google',
         email: userCred.user?.email ?? '',
         phone: '',
@@ -114,6 +132,7 @@ class AuthProvider extends ChangeNotifier {
       );
       await credential.user?.updateDisplayName(name);
       _currentUser = AppUser(
+        id: credential.user!.uid,
         name: name,
         email: email,
         phone: phone,

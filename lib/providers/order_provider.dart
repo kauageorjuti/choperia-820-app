@@ -4,21 +4,27 @@ import 'package:flutter/material.dart';
 
 import '../models/cart_item.dart';
 import '../models/order_model.dart';
+import '../services/firestore_service.dart';
 
 class OrderProvider extends ChangeNotifier {
+  OrderProvider({FirestoreService? service}) : _service = service ?? FirestoreService();
+
+  final FirestoreService _service;
   OrderModel? _currentOrder;
-  Timer? _statusTimer;
+  StreamSubscription<OrderModel?>? _orderSubscription;
 
   OrderModel? get currentOrder => _currentOrder;
 
   Future<OrderModel> placeOrder({
+    required String userId,
+    required String userName,
+    String? userPhone,
     required List<CartItem> items,
     required double total,
     required OrderType type,
     String? address,
     String? observation,
   }) async {
-    await Future<void>.delayed(const Duration(milliseconds: 800));
     final List<CartItem> snapshotItems = items
         .map(
           (CartItem i) => CartItem(
@@ -30,8 +36,13 @@ class OrderProvider extends ChangeNotifier {
         )
         .toList();
 
+    final String orderId = DateTime.now().millisecondsSinceEpoch.toString();
+
     _currentOrder = OrderModel(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      id: orderId,
+      userId: userId,
+      userName: userName,
+      userPhone: userPhone,
       items: snapshotItems,
       total: total,
       type: type,
@@ -40,44 +51,28 @@ class OrderProvider extends ChangeNotifier {
       createdAt: DateTime.now(),
       statusHistory: <OrderStatus>[OrderStatus.created],
     );
+
+    await _service.createOrder(_currentOrder!);
+
+    _startListeningToOrder(orderId);
+    
     notifyListeners();
-    _startProgressSimulation();
     return _currentOrder!;
   }
 
-  void _startProgressSimulation() {
-    _statusTimer?.cancel();
-    _statusTimer = Timer.periodic(const Duration(seconds: 4), (Timer timer) {
-      final OrderModel? order = _currentOrder;
-      if (order == null) return;
-
-      final List<OrderStatus> flow = order.type == OrderType.delivery
-          ? <OrderStatus>[
-              OrderStatus.accepted,
-              OrderStatus.preparing,
-              OrderStatus.onTheWay,
-              OrderStatus.delivered,
-            ]
-          : <OrderStatus>[
-              OrderStatus.accepted,
-              OrderStatus.preparing,
-              OrderStatus.readyForPickup,
-              OrderStatus.delivered,
-            ];
-
-      if (order.statusHistory.length >= flow.length + 1) {
-        timer.cancel();
-        return;
+  void _startListeningToOrder(String orderId) {
+    _orderSubscription?.cancel();
+    _orderSubscription = _service.watchOrder(orderId).listen((OrderModel? updatedOrder) {
+      if (updatedOrder != null) {
+        _currentOrder = updatedOrder;
+        notifyListeners();
       }
-
-      order.statusHistory.add(flow[order.statusHistory.length - 1]);
-      notifyListeners();
     });
   }
 
   @override
   void dispose() {
-    _statusTimer?.cancel();
+    _orderSubscription?.cancel();
     super.dispose();
   }
 }

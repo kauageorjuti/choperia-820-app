@@ -33,16 +33,22 @@ extension OrderStatusLabel on OrderStatus {
 class OrderModel {
   OrderModel({
     required this.id,
+    required this.userId,
     required this.items,
     required this.total,
     required this.type,
     required this.createdAt,
     required this.statusHistory,
+    required this.userName,
+    this.userPhone,
     this.address,
     this.observation,
   });
 
   final String id;
+  final String userId;
+  final String userName;
+  final String? userPhone;
   final List<CartItem> items;
   final double total;
   final OrderType type;
@@ -60,5 +66,49 @@ class OrderModel {
     final String shortId =
         numbersOnly.length > 4 ? numbersOnly.substring(numbersOnly.length - 4) : numbersOnly;
     return '#$shortId';
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'userId': userId,
+      'userName': userName,
+      'userPhone': userPhone,
+      'items': items.map((i) => i.toMap()).toList(),
+      'total': total,
+      'type': type.name,
+      'address': address,
+      'observation': observation,
+      'createdAt': createdAt.millisecondsSinceEpoch,
+      'statusHistory': statusHistory.map((s) => s.name).toList(),
+    };
+  }
+
+  factory OrderModel.fromMap(Map<String, dynamic> map, {String? documentId}) {
+    return OrderModel(
+      id: documentId ?? map['id'] as String? ?? '',
+      userId: map['userId'] as String? ?? '',
+      userName: map['userName'] as String? ?? 'Cliente',
+      userPhone: map['userPhone'] as String?,
+      items: (map['items'] as List<dynamic>?)
+              ?.map((i) => CartItem.fromMap(Map<String, dynamic>.from(i as Map)))
+              .toList() ??
+          [],
+      total: (map['total'] as num?)?.toDouble() ?? 0.0,
+      type: OrderType.values.firstWhere(
+        (e) => e.name == map['type'],
+        orElse: () => OrderType.delivery,
+      ),
+      address: map['address'] as String?,
+      observation: map['observation'] as String?,
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int? ?? 0),
+      statusHistory: (map['statusHistory'] as List<dynamic>?)
+              ?.map((s) => OrderStatus.values.firstWhere(
+                    (e) => e.name == s,
+                    orElse: () => OrderStatus.created,
+                  ))
+              .toList() ??
+          [OrderStatus.created],
+    );
   }
 }

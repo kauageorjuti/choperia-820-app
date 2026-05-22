@@ -25,4 +25,31 @@ class Product {
   final List<ProductPortion>? portions;
 
   bool get hasPortions => portions != null && portions!.isNotEmpty;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+      'description': description,
+      'price': price,
+      'image': image,
+      'category': category,
+      'ingredients': ingredients,
+      'portions': portions?.map((p) => p.toMap()).toList(),
+    };
+  }
+
+  factory Product.fromMap(Map<String, dynamic> map, {String? documentId}) {
+    final portionsData = map['portions'] as List<dynamic>?;
+    return Product(
+      id: documentId ?? map['id'] as String? ?? '',
+      name: map['name'] as String? ?? '',
+      description: map['description'] as String? ?? '',
+      price: (map['price'] as num?)?.toDouble() ?? 0.0,
+      image: map['image'] as String? ?? '',
+      category: map['category'] as String? ?? '',
+      ingredients: (map['ingredients'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
+      portions: portionsData?.map((p) => ProductPortion.fromMap(Map<String, dynamic>.from(p))).toList(),
+    );
+  }
 }

@@ -59,7 +59,7 @@ class OrderTrackingPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'Pedido #${order.id.substring(order.id.length - 6)}',
+                            'Pedido ${order.shortCode}',
                             style: const TextStyle(
                               fontWeight: FontWeight.w800,
                               fontSize: 17,
@@ -69,15 +69,15 @@ class OrderTrackingPage extends StatelessWidget {
                           Text(
                             order.type == OrderType.delivery
                                 ? 'Tipo: Entrega'
-                                : 'Tipo: Retirada no balcao',
+                                : 'Tipo: Retirada no balcão',
                           ),
-                          if (order.address != null) Text('Endereco: ${order.address}'),
+                          if (order.address != null) Text('Endereço: ${order.address}'),
                           const SizedBox(height: 6),
                           Text('Total: ${Formatters.currency(order.total)}'),
                           if (order.observation != null) ...<Widget>[
                             const SizedBox(height: 10),
                             Text(
-                              'Observacao Geral:\n${order.observation}',
+                              'Observação Geral:\n${order.observation}',
                               style: TextStyle(
                                 fontSize: 13,
                                 color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -165,7 +165,7 @@ class OrderTrackingPage extends StatelessWidget {
                           );
                         },
                         icon: const Icon(Icons.restaurant_menu_rounded),
-                        label: const Text('Voltar para o cardapio'),
+                        label: const Text('Voltar para o cardápio'),
                       ),
                     ),
                   ],

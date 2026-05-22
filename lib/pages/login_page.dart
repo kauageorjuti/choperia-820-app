@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
       );
       
 
-      if (!mounted) return;
+      if (!context.mounted) return;
       
       // 3. Deu certo! Mostra a mensagem e vai para a Home
       ScaffoldMessenger.of(context).showSnackBar(
@@ -56,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pushReplacementNamed(context, AppRoutes.home);
 
     } catch (e) {
-      if (!mounted) return;
+      if (!context.mounted) return;
       
       // 4. CAPTURA o erro (Ex: senha incorreta) e avisa o usuário
       ScaffoldMessenger.of(context).showSnackBar(
@@ -244,12 +244,12 @@ class _LoginPageState extends State<LoginPage> {
                                         try {
                                           await auth.loginWithGoogle();
                                           
-                                          if (!mounted) return;
+                                          if (!context.mounted) return;
                                           // Se deu tudo certo, vai para a Home!
                                           Navigator.pushReplacementNamed(context, AppRoutes.home);
                                           
                                         } catch (e) {
-                                          if (!mounted) return;
+                                          if (!context.mounted) return;
                                           // Se der erro, mostra a barrinha vermelha
                                           ScaffoldMessenger.of(context).showSnackBar(
                                             const SnackBar(

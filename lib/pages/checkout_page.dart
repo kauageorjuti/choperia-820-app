@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/order_model.dart';
+import '../providers/auth_provider.dart';
 import '../providers/cart_provider.dart';
 import '../providers/order_provider.dart';
 import '../utils/app_routes.dart';
@@ -36,6 +37,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   Future<void> _confirmOrder() async {
+    final auth = context.read<AuthProvider>();
+    if (!auth.isAuthenticated) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Faça login ou cadastre-se para finalizar o pedido.')),
+      );
+      Navigator.pushNamed(context, AppRoutes.login);
+      return;
+    }
+
     final CartProvider cart = context.read<CartProvider>();
     if (cart.isEmpty) return;
 
@@ -51,6 +61,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
     setState(() => _isSubmitting = true);
     final OrderModel order = await context.read<OrderProvider>().placeOrder(
+          userId: auth.currentUser!.id,
+          userName: auth.currentUser!.name,
+          userPhone: auth.currentUser!.phone,
           items: cart.items,
           total: finalTotal,
           type: _selectedType,
@@ -245,6 +258,24 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 ),
               ),
               const SizedBox(height: 18),
+              Consumer<AuthProvider>(
+                builder: (_, AuthProvider auth, _) {
+                  if (auth.isAuthenticated) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Text(
+                        'Fazendo pedido como: ${auth.currentUser?.name ?? "Cliente"}',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
               FilledButton.icon(
                 onPressed: _isSubmitting ? null : _confirmOrder,
                 style: FilledButton.styleFrom(

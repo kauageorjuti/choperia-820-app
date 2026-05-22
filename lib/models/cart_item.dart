@@ -33,4 +33,24 @@ class CartItem {
   double get unitPrice => selectedPortion?.price ?? product.price;
 
   double get subtotal => unitPrice * quantity;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'product': product.toMap(),
+      'selectedPortion': selectedPortion?.toMap(),
+      'observation': observation,
+      'quantity': quantity,
+    };
+  }
+
+  factory CartItem.fromMap(Map<String, dynamic> map) {
+    return CartItem(
+      product: Product.fromMap(Map<String, dynamic>.from(map['product'] as Map)),
+      selectedPortion: map['selectedPortion'] != null
+          ? ProductPortion.fromMap(Map<String, dynamic>.from(map['selectedPortion'] as Map))
+          : null,
+      observation: map['observation'] as String?,
+      quantity: map['quantity'] as int? ?? 1,
+    );
+  }
 }

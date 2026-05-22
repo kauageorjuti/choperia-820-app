@@ -31,6 +31,14 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateProduct(String oldCartKey, CartItem updatedItem) {
+    if (oldCartKey != updatedItem.cartKey) {
+      _items.remove(oldCartKey);
+    }
+    _items[updatedItem.cartKey] = updatedItem;
+    notifyListeners();
+  }
+
   /// Remove item pelo cartKey (ex: "pr-1__2 Pessoas" ou "pt-1").
   void removeProduct(String cartKey) {
     _items.remove(cartKey);

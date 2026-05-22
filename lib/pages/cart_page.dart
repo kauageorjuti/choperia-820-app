@@ -203,7 +203,10 @@ class _CartItemRow extends StatelessWidget {
                           onTap: () => Navigator.pushNamed(
                             context,
                             AppRoutes.productDetails,
-                            arguments: item.product,
+                            arguments: ProductDetailsArgs(
+                              product: item.product,
+                              editingItem: item,
+                            ),
                           ),
                           child: Text(
                             'Editar',

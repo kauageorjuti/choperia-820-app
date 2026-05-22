@@ -67,7 +67,7 @@ class OrderConfirmationPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   const Text(
-                    'Seu pedido foi recebido com sucesso\nEm breve ele estara pronto!',
+                    'Seu pedido foi recebido com sucesso\nEm breve ele estará pronto!',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 13,
@@ -98,7 +98,7 @@ class OrderConfirmationPage extends StatelessWidget {
                     style: FilledButton.styleFrom(
                       minimumSize: const Size(double.infinity, 54),
                     ),
-                    child: const Text('FAZER NOVO PEDIDO'),
+                    child: const Text('Voltar'),
                   ),
                   const SizedBox(height: 8),
                   TextButton(

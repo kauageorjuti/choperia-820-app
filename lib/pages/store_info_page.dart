@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// Horário de funcionamento da Choperia 820.
 /// Edite aqui para atualizar os horários no app.
@@ -95,13 +96,27 @@ class StoreInfoPage extends StatelessWidget {
 
           // ── Contato ──────────────────────────────────────
           _SectionTitle(label: 'Contato'),
-          const _InfoRow(
+          _InfoRow(
             icon: Icons.phone_outlined,
-            text: '(16) 3826-8820',
+            text: '(16) 99987-2820',
+            isLink: true,
+            onTap: () async {
+              final Uri url = Uri.parse('https://wa.me/5516999872820');
+              if (await canLaunchUrl(url)) {
+                await launchUrl(url, mode: LaunchMode.externalApplication);
+              }
+            },
           ),
-          const _InfoRow(
+          _InfoRow(
             icon: Icons.email_outlined,
             text: 'contato@choperia820.com.br',
+            isLink: true,
+            onTap: () async {
+              final Uri url = Uri.parse('mailto:contato@choperia820.com.br');
+              if (await canLaunchUrl(url)) {
+                await launchUrl(url);
+              }
+            },
           ),
           const _Divider(),
 
@@ -152,13 +167,15 @@ class _SectionTitle extends StatelessWidget {
 }
 
 class _InfoRow extends StatelessWidget {
-  const _InfoRow({required this.icon, required this.text});
+  const _InfoRow({required this.icon, required this.text, this.onTap, this.isLink = false});
   final IconData icon;
   final String text;
+  final VoidCallback? onTap;
+  final bool isLink;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    Widget content = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,12 +185,27 @@ class _InfoRow extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(fontSize: 14, height: 1.45),
+              style: TextStyle(
+                fontSize: 14, 
+                height: 1.45,
+                color: isLink ? Theme.of(context).colorScheme.primary : null,
+                decoration: isLink ? TextDecoration.underline : null,
+                decorationColor: isLink ? Theme.of(context).colorScheme.primary : null,
+              ),
             ),
           ),
         ],
       ),
     );
+
+    if (onTap != null) {
+      content = InkWell(
+        onTap: onTap,
+        child: content,
+      );
+    }
+
+    return content;
   }
 }
 

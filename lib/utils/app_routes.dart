@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/product.dart';
+import '../models/cart_item.dart';
 import '../pages/about_page.dart';
 import '../pages/cart_page.dart';
 import '../pages/checkout_page.dart';
@@ -14,6 +15,12 @@ import '../pages/register_page.dart';
 import '../pages/settings_page.dart';
 import '../pages/splash_page.dart';
 import '../pages/store_info_page.dart';
+
+class ProductDetailsArgs {
+  const ProductDetailsArgs({required this.product, this.editingItem});
+  final Product product;
+  final CartItem? editingItem;
+}
 
 class AppRoutes {
   static const String splash = '/';
@@ -43,8 +50,16 @@ class AppRoutes {
       case home:
         return _route(const HomePage(), settings);
       case productDetails:
-        final Product product = settings.arguments as Product;
-        return _route(ProductDetailsPage(product: product), settings);
+        final dynamic args = settings.arguments;
+        Product product;
+        CartItem? editingItem;
+        if (args is ProductDetailsArgs) {
+          product = args.product;
+          editingItem = args.editingItem;
+        } else {
+          product = args as Product;
+        }
+        return _route(ProductDetailsPage(product: product, editingItem: editingItem), settings);
       case cart:
         return _route(const CartPage(), settings);
       case checkout:

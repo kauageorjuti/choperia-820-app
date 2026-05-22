@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/product.dart';
+import '../models/cart_item.dart';
 import '../models/product_portion.dart';
 import '../providers/cart_provider.dart';
 import '../utils/formatters.dart';
@@ -11,9 +12,11 @@ class ProductDetailsPage extends StatefulWidget {
   const ProductDetailsPage({
     super.key,
     required this.product,
+    this.editingItem,
   });
 
   final Product product;
+  final CartItem? editingItem;
 
   @override
   State<ProductDetailsPage> createState() => _ProductDetailsPageState();
@@ -27,8 +30,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
   void initState() {
     super.initState();
-    // Pré-seleciona a primeira porção se o produto tiver porções
-    if (widget.product.hasPortions) {
+    if (widget.editingItem != null) {
+      _quantity = widget.editingItem!.quantity;
+      _selectedPortion = widget.editingItem!.selectedPortion;
+      _obsController.text = widget.editingItem!.observation ?? '';
+    } else if (widget.product.hasPortions) {
       _selectedPortion = widget.product.portions!.first;
     }
   }
@@ -43,9 +49,23 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     final CartProvider cart = context.read<CartProvider>();
     final String? obs =
         _obsController.text.trim().isEmpty ? null : _obsController.text.trim();
-    for (int i = 0; i < _quantity; i++) {
-      cart.addProduct(widget.product, portion: _selectedPortion, observation: obs);
+
+    if (widget.editingItem != null) {
+      // Editar
+      final updatedItem = CartItem(
+        product: widget.product,
+        selectedPortion: _selectedPortion,
+        observation: obs,
+      );
+      updatedItem.quantity = _quantity;
+      cart.updateProduct(widget.editingItem!.cartKey, updatedItem);
+    } else {
+      // Adicionar novo
+      for (int i = 0; i < _quantity; i++) {
+        cart.addProduct(widget.product, portion: _selectedPortion, observation: obs);
+      }
     }
+
     final ScaffoldMessengerState messenger = ScaffoldMessenger.of(context);
     messenger.hideCurrentSnackBar();
     messenger.showSnackBar(
@@ -53,7 +73,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         behavior: SnackBarBehavior.floating,
         duration: const Duration(milliseconds: 900),
         content: Text(
-          '$_quantity× ${widget.product.name}${_selectedPortion != null ? ' (${_selectedPortion!.label})' : ''} adicionado ao carrinho!',
+          widget.editingItem != null 
+            ? 'Produto atualizado no carrinho!'
+            : '$_quantity× ${widget.product.name}${_selectedPortion != null ? ' (${_selectedPortion!.label})' : ''} adicionado ao carrinho!',
         ),
       ),
     );
